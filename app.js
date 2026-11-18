@@ -8,13 +8,52 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
   });
 });
 
-// --- MOTOR DE VOZ (WEB SPEECH API) ---
+// --- MOTOR DE VOZ MEJORADO (WEB SPEECH API + FALLBACK) ---
+let englishVoice = null;
+
+function loadVoices() {
+  const voices = window.speechSynthesis.getVoices();
+  if (voices.length > 0) {
+    // Prioriza voces de Google US English o cualquier voz en-US / en-GB
+    englishVoice =
+      voices.find(v => v.name.includes('Google US English')) ||
+      voices.find(v => v.lang === 'en-US') ||
+      voices.find(v => v.lang.startsWith('en'));
+  }
+}
+
+// Los navegadores cargan las voces de forma asíncrona
+loadVoices();
+if (window.speechSynthesis.onvoiceschanged !== undefined) {
+  window.speechSynthesis.onvoiceschanged = loadVoices;
+}
+
 function speakText(text, rate = 1.0) {
-  window.speechSynthesis.cancel();
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang = 'en-US';
-  utterance.rate = rate;
-  window.speechSynthesis.speak(utterance);
+  if (!('speechSynthesis' in window)) {
+    alert('Tu navegador no soporta síntesis de voz.');
+    return;
+  }
+
+  // Si estaba pausado o trabado, lo reinicia suavemente
+  if (window.speechSynthesis.speaking) {
+    window.speechSynthesis.cancel();
+  }
+
+  // Pequeña pausa de 50ms para evitar el bug de Chrome donde cancel() mata el siguiente speak()
+  setTimeout(() => {
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'en-US';
+    utterance.rate = rate;
+    utterance.pitch = 1.0;
+    utterance.volume = 1.0;
+
+    if (!englishVoice) loadVoices();
+    if (englishVoice) {
+      utterance.voice = englishVoice;
+    }
+
+    window.speechSynthesis.speak(utterance);
+  }, 50);
 }
 
 // --- ALMACENAMIENTO LOCAL (ESTRUCTURA LISTA PARA SUPABASE) ---
