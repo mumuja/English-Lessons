@@ -8,64 +8,38 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
   });
 });
 
-// --- MOTOR DE VOZ BLINDADO PARA PALABRAS Y ORACIONES COMPLETAS ---
-let availableVoices = [];
-
-function initVoices() {
-  if ('speechSynthesis' in window) {
-    availableVoices = window.speechSynthesis.getVoices();
-  }
-}
-
-initVoices();
-if ('speechSynthesis' in window && window.speechSynthesis.onvoiceschanged !== undefined) {
-  window.speechSynthesis.onvoiceschanged = initVoices;
-}
-
+// --- MOTOR DE VOZ INFALIBLE (WEB SPEECH + GOOGLE GTX FALLBACK) ---
 function speakText(text, rate = 1.0) {
   const cleanText = text.trim();
   if (!cleanText) return;
 
-  // 1. Intentar con Web Speech API (usando voz en inglés si existe, o la voz por defecto del navegador)
+  // 1. Intentar con Web Speech API nativo del navegador
   if ('speechSynthesis' in window) {
     window.speechSynthesis.cancel();
-    if (availableVoices.length === 0) initVoices();
+    window.speechSynthesis.resume(); // Desbloquea el motor si Chrome lo pausó
 
-    const voice =
-      availableVoices.find(v => v.name.includes('Google US English')) ||
-      availableVoices.find(v => v.lang === 'en-US') ||
-      availableVoices.find(v => v.lang.startsWith('en'));
+    const voices = window.speechSynthesis.getVoices();
+    const enVoice =
+      voices.find(v => v.name.includes('Google US English')) ||
+      voices.find(v => v.lang === 'en-US') ||
+      voices.find(v => v.lang.startsWith('en'));
 
-    // Si hay al menos alguna voz disponible en el sistema, usar Web Speech API
-    if (voice || availableVoices.length > 0) {
-      setTimeout(() => {
-        const utterance = new SpeechSynthesisUtterance(cleanText);
-        if (voice) utterance.voice = voice;
-        utterance.lang = 'en-US';
-        utterance.rate = rate;
-        window.speechSynthesis.speak(utterance);
-      }, 50);
+    // Si hay voces cargadas, usar Web Speech API
+    if (voices.length > 0) {
+      const utterance = new SpeechSynthesisUtterance(cleanText);
+      if (enVoice) utterance.voice = enVoice;
+      utterance.lang = 'en-US';
+      utterance.rate = rate;
+      window.speechSynthesis.speak(utterance);
       return;
     }
   }
 
-  // 2. Respaldo externo compatible con frases completas y signos de puntuación
-  const ttsUrl = `https://api.streamelements.com/kappa/v2/speech?voice=Brian&text=${encodeURIComponent(cleanText)}`;
-  const audio = new Audio(ttsUrl);
+  // 2. Respaldo directo compatible con cualquier navegador y oraciones completas
+  const gtxUrl = `https://translate.googleapis.com/translate_tts?client=gtx&ie=UTF-8&tl=en-US&q=${encodeURIComponent(cleanText)}`;
+  const audio = new Audio(gtxUrl);
   audio.playbackRate = rate;
-  audio.play().catch(err => console.error('Error en audio de respaldo:', err));
-}
-
-// --- ALMACENAMIENTO LOCAL (ESTRUCTURA LISTA PARA SUPABASE) ---
-const STORAGE_KEY = 'english_lab_deck_v1';
-
-function getDeck() {
-  return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-}
-
-function saveDeck(deck) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(deck));
-  renderDeck();
+  audio.play().catch(err => console.warn('Audio bloqueado por el navegador:', err));
 }
 
 // --- CONSULTA A FREE DICTIONARY API ---
