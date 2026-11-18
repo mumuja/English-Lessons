@@ -80,13 +80,31 @@
       <div id="grammar-arena" class="card"></div>
     </section>
 
-    <!-- PLACEHOLDERS -->
-    <section id="pronunciation" class="module"><div class="card"><h2>🎙️ Estudio de Pronunciación (Paso 3)</h2><p>Próximamente: Reconocimiento de voz en tiempo real y pares mínimos.</p></div></section>
-    <section id="slang" class="module"><div class="card"><h2>🗣️ Modismos y Phrasal Verbs (Paso 4)</h2><p>Próximamente: Decodificador de inglés real y callejero.</p></div></section>
-    <section id="music" class="module"><div class="card"><h2>🎵 Music & Lyrics Lab (Paso 5)</h2><p>Próximamente: Reproductor de YouTube con letras interactivas.</p></div></section>
+   <!-- MÓDULO 3: ESTUDIO DE PRONUNCIACIÓN -->
+    <section id="pronunciation" class="module">
+      <div class="module-header">
+        <h1>Estudio de Pronunciación & Shadowing</h1>
+        <p>Entrena tu oído con pares mínimos y mide tu pronunciación en tiempo real con el micrófono.</p>
+      </div>
+
+      <div class="grammar-controls">
+        <div class="level-selector" id="pron-level-selector">
+          <button class="lvl-btn active" data-plevel="basic">🟢 Básico (A1-A2)</button>
+          <button class="lvl-btn" data-plevel="intermediate">🟡 Intermedio (B1-B2)</button>
+          <button class="lvl-btn" data-plevel="advanced">🔴 Avanzado (C1)</button>
+        </div>
+        <div class="mode-selector" id="pron-mode-selector">
+          <button class="mode-btn active" data-pmode="shadowing">🎙️ Shadowing (Micrófono)</button>
+          <button class="mode-btn" data-pmode="pairs">👂 Pares Mínimos</button>
+        </div>
+      </div>
+
+      <div id="pronunciation-arena" class="card"></div>
+    </section>
   </main>
 
-  <script src="./app.js?v=7"></script>
-  <script src="./grammar.js?v=7"></script>
+ <script src="./app.js?v=8"></script>
+  <script src="./grammar.js?v=8"></script>
+  <script src="./pronunciation.js?v=8"></script>
 </body>
 </html>
