@@ -112,7 +112,6 @@ let selectedIndices = [];
 
 const grammarArena = document.getElementById('grammar-arena');
 
-// Selectores de Nivel y Modo
 document.querySelectorAll('.lvl-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.lvl-btn').forEach(b => b.classList.remove('active'));
@@ -147,7 +146,6 @@ function renderGrammarExercise() {
 // --- MODO 1: CONSTRUCTOR DE BLOQUES ---
 function renderBuilder(ex) {
   selectedIndices = [];
-  // Mezclar palabras manteniendo sus índices originales
   const shuffled = ex.words
     .map((word, idx) => ({ word, idx }))
     .sort(() => Math.random() - 0.5);
