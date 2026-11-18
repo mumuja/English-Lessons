@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>English Mastery Lab</title>
   <link rel="icon" href="data:," />
-  <link rel="stylesheet" href="./styles.css?v=7" />
+  <link rel="stylesheet" href="./styles.css?v=11" />
 </head>
 <body>
   <header class="topbar">
@@ -80,7 +80,7 @@
       <div id="grammar-arena" class="card"></div>
     </section>
 
-   <!-- MÓDULO 3: ESTUDIO DE PRONUNCIACIÓN -->
+    <!-- MÓDULO 3: ESTUDIO DE PRONUNCIACIÓN -->
     <section id="pronunciation" class="module">
       <div class="module-header">
         <h1>Estudio de Pronunciación & Shadowing</h1>
@@ -101,10 +101,36 @@
 
       <div id="pronunciation-arena" class="card"></div>
     </section>
+
+    <!-- MÓDULO 4: MODISMOS, SLANG Y PHRASAL VERBS -->
+    <section id="slang" class="module">
+      <div class="module-header">
+        <h1>Decodificador de Modismos, Slang & Phrasal Verbs</h1>
+        <p>Domina las expresiones que los nativos usan a diario y que no se traducen palabra por palabra.</p>
+      </div>
+
+      <div class="grammar-controls">
+        <div class="level-selector" id="slang-cat-selector">
+          <button class="lvl-btn active" data-scat="phrasal">🚀 Phrasal Verbs</button>
+          <button class="lvl-btn" data-scat="idioms">🎭 Idioms (Dichos)</button>
+          <button class="lvl-btn" data-scat="slang">💬 Slang Cotidiano</button>
+        </div>
+        <div class="mode-selector" id="slang-mode-selector">
+          <button class="mode-btn active" data-smode="decode">🕵️ Decodificar en Contexto</button>
+          <button class="mode-btn" data-smode="upgrade">🔄 Sonar Más Nativo</button>
+        </div>
+      </div>
+
+      <div id="slang-arena" class="card"></div>
+    </section>
+
+    <!-- PLACEHOLDER MÓDULO 5 -->
+    <section id="music" class="module"><div class="card"><h2>🎵 Music & Lyrics Lab (Paso 5)</h2><p>Próximamente: Reproductor de YouTube con letras interactivas.</p></div></section>
   </main>
 
- <script src="./app.js?v=10"></script>
-  <script src="./grammar.js?v=9"></script>
-  <script src="./pronunciation.js?v=8"></script>
+  <script src="./app.js?v=11"></script>
+  <script src="./grammar.js?v=11"></script>
+  <script src="./pronunciation.js?v=11"></script>
+  <script src="./slang.js?v=11"></script>
 </body>
 </html>
