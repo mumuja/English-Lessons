@@ -8,24 +8,23 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
   });
 });
 
-// --- MOTOR DE VOZ INFALIBLE (WEB SPEECH + GOOGLE GTX FALLBACK) ---
+// --- MOTOR DE VOZ (WEB SPEECH + SECUENCIADOR MP3 NATIVO) ---
 function speakText(text, rate = 1.0) {
   const cleanText = text.trim();
   if (!cleanText) return;
 
-  // 1. Intentar con Web Speech API nativo del navegador
+  // 1. Si el navegador tiene voces nativas disponibles, usarlas directo
   if ('speechSynthesis' in window) {
     window.speechSynthesis.cancel();
-    window.speechSynthesis.resume(); // Desbloquea el motor si Chrome lo pausó
-
+    window.speechSynthesis.resume();
     const voices = window.speechSynthesis.getVoices();
-    const enVoice =
-      voices.find(v => v.name.includes('Google US English')) ||
-      voices.find(v => v.lang === 'en-US') ||
-      voices.find(v => v.lang.startsWith('en'));
 
-    // Si hay voces cargadas, usar Web Speech API
     if (voices.length > 0) {
+      const enVoice =
+        voices.find(v => v.name.includes('Google US English')) ||
+        voices.find(v => v.lang === 'en-US') ||
+        voices.find(v => v.lang.startsWith('en'));
+
       const utterance = new SpeechSynthesisUtterance(cleanText);
       if (enVoice) utterance.voice = enVoice;
       utterance.lang = 'en-US';
@@ -35,11 +34,57 @@ function speakText(text, rate = 1.0) {
     }
   }
 
-  // 2. Respaldo directo compatible con cualquier navegador y oraciones completas
-  const gtxUrl = `https://translate.googleapis.com/translate_tts?client=gtx&ie=UTF-8&tl=en-US&q=${encodeURIComponent(cleanText)}`;
-  const audio = new Audio(gtxUrl);
-  audio.playbackRate = rate;
-  audio.play().catch(err => console.warn('Audio bloqueado por el navegador:', err));
+  // 2. Respaldo garantizado: reproduce cada palabra usando sus MP3 reales de dictionaryapi.dev
+  const words = cleanText.replace(/[^a-zA-Z'\s]/g, '').split(/\s+/).filter(Boolean);
+  playWordSequence(words, rate, 0);
+}
+
+async function playWordSequence(words, rate, idx) {
+  if (idx >= words.length) return;
+  const word = words[idx].toLowerCase();
+
+  try {
+    const res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
+    if (res.ok) {
+      const data = await res.json();
+      const audioObj = data[0]?.phonetics?.find(p => p.audio && p.audio.endsWith('.mp3'));
+      if (audioObj) {
+        const url = audioObj.audio.startsWith('//') ? `https:${audioObj.audio}` : audioObj.audio;
+        const audio = new Audio(url);
+        audio.playbackRate = rate;
+        audio.onended = () => playWordSequence(words, rate, idx + 1);
+        audio.onerror = () => playWordSequence(words, rate, idx + 1);
+        await audio.play();
+        return;
+      }
+    }
+  } catch (e) {
+    // Continuar con la siguiente palabra si alguna no tiene audio
+  }
+  playWordSequence(words, rate, idx + 1);
+}
+
+// --- REPRODUCTOR SEGURO PARA EL BOTÓN NATIVO DE LA API ---
+function playNativeAudio(rawUrl, fallbackWord) {
+  if (!rawUrl) {
+    speakText(fallbackWord, 1.0);
+    return;
+  }
+  const fixedUrl = rawUrl.startsWith('//') ? `https:${rawUrl}` : rawUrl;
+  const audio = new Audio(fixedUrl);
+  audio.play().catch(() => speakText(fallbackWord, 1.0));
+}
+
+// --- ALMACENAMIENTO LOCAL (ESTRUCTURA LISTA PARA SUPABASE) ---
+const STORAGE_KEY = 'english_lab_deck_v1';
+
+function getDeck() {
+  return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+}
+
+function saveDeck(deck) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(deck));
+  renderDeck();
 }
 
 // --- CONSULTA A FREE DICTIONARY API ---
