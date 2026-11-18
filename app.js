@@ -23,7 +23,6 @@ if ('speechSynthesis' in window && window.speechSynthesis.onvoiceschanged !== un
 }
 
 function speakText(text, rate = 1.0) {
-  // 1. Intentar con Web Speech API si el sistema tiene voces en inglés
   if ('speechSynthesis' in window) {
     window.speechSynthesis.cancel();
     if (availableVoices.length === 0) initVoices();
@@ -45,7 +44,6 @@ function speakText(text, rate = 1.0) {
     }
   }
 
-  // 2. Respaldo automático si el navegador/SO no tiene voces locales instaladas
   const fallbackUrl = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(text)}&type=2`;
   const audio = new Audio(fallbackUrl);
   audio.playbackRate = rate;
