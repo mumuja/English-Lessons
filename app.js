@@ -8,60 +8,30 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
   });
 });
 
-// --- MOTOR DE VOZ (WEB SPEECH + SECUENCIADOR MP3 NATIVO) ---
+// --- MOTOR DE VOZ NATIVO DIRECTO (SIN PETICIONES EXTERNAS NI ERROR 429) ---
 function speakText(text, rate = 1.0) {
   const cleanText = text.trim();
-  if (!cleanText) return;
+  if (!cleanText || !('speechSynthesis' in window)) return;
 
-  // 1. Si el navegador tiene voces nativas disponibles, usarlas directo
-  if ('speechSynthesis' in window) {
-    window.speechSynthesis.cancel();
-    window.speechSynthesis.resume();
-    const voices = window.speechSynthesis.getVoices();
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.resume();
 
-    if (voices.length > 0) {
-      const enVoice =
-        voices.find(v => v.name.includes('Google US English')) ||
-        voices.find(v => v.lang === 'en-US') ||
-        voices.find(v => v.lang.startsWith('en'));
+  const utterance = new SpeechSynthesisUtterance(cleanText);
+  utterance.lang = 'en-US';
+  utterance.rate = rate;
+  utterance.pitch = 1.0;
 
-      const utterance = new SpeechSynthesisUtterance(cleanText);
-      if (enVoice) utterance.voice = enVoice;
-      utterance.lang = 'en-US';
-      utterance.rate = rate;
-      window.speechSynthesis.speak(utterance);
-      return;
-    }
+  const voices = window.speechSynthesis.getVoices();
+  const enVoice =
+    voices.find(v => v.name.includes('Google US English')) ||
+    voices.find(v => v.lang === 'en-US') ||
+    voices.find(v => v.lang.startsWith('en'));
+
+  if (enVoice) {
+    utterance.voice = enVoice;
   }
 
-  // 2. Respaldo garantizado: reproduce cada palabra usando sus MP3 reales de dictionaryapi.dev
-  const words = cleanText.replace(/[^a-zA-Z'\s]/g, '').split(/\s+/).filter(Boolean);
-  playWordSequence(words, rate, 0);
-}
-
-async function playWordSequence(words, rate, idx) {
-  if (idx >= words.length) return;
-  const word = words[idx].toLowerCase();
-
-  try {
-    const res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
-    if (res.ok) {
-      const data = await res.json();
-      const audioObj = data[0]?.phonetics?.find(p => p.audio && p.audio.endsWith('.mp3'));
-      if (audioObj) {
-        const url = audioObj.audio.startsWith('//') ? `https:${audioObj.audio}` : audioObj.audio;
-        const audio = new Audio(url);
-        audio.playbackRate = rate;
-        audio.onended = () => playWordSequence(words, rate, idx + 1);
-        audio.onerror = () => playWordSequence(words, rate, idx + 1);
-        await audio.play();
-        return;
-      }
-    }
-  } catch (e) {
-    // Continuar con la siguiente palabra si alguna no tiene audio
-  }
-  playWordSequence(words, rate, idx + 1);
+  window.speechSynthesis.speak(utterance);
 }
 
 // --- REPRODUCTOR SEGURO PARA EL BOTÓN NATIVO DE LA API ---
