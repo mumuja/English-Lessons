@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>English Mastery Lab</title>
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="styles.css?v=2" />
+  <link rel="icon" href="data:," />
+  <link rel="stylesheet" href="./styles.css?v=7" />
 </head>
 <body>
   <header class="topbar">
@@ -30,13 +30,11 @@
         <p>Busca cualquier palabra, escucha su pronunciación nativa y guárdala en tu mazo personal.</p>
       </div>
 
-      <!-- Buscador de Diccionario -->
       <div class="search-box">
         <input type="text" id="word-input" placeholder="Escribe una palabra en inglés (ej. resilient, breakthrough, schedule)..." />
         <button id="search-btn" class="btn-primary">Buscar</button>
       </div>
 
-      <!-- Palabras sugeridas por nivel -->
       <div class="quick-tags">
         <span>Prueba rápido:</span>
         <button class="tag-btn" data-word="awkward">awkward (B1)</button>
@@ -45,34 +43,28 @@
         <button class="tag-btn" data-word="reliable">reliable (A2)</button>
       </div>
 
-      <!-- Resultado del Diccionario -->
       <div id="dictionary-result" class="card hidden"></div>
 
       <hr class="divider" />
 
-      <!-- Mazo Personal y Repaso -->
       <div class="deck-section">
         <div class="deck-header">
           <h2>Tu Mazo de Memorización</h2>
           <button id="start-review-btn" class="btn-secondary">🎯 Practicar Mazo</button>
         </div>
 
-        <!-- Área de Práctica Activa (oculta hasta dar clic en Practicar) -->
         <div id="review-arena" class="card review-box hidden"></div>
-
-        <!-- Lista de palabras guardadas -->
         <div id="saved-words-list" class="words-grid"></div>
       </div>
     </section>
 
-  <!-- MÓDULO 2: GRAMÁTICA DINÁMICA -->
+    <!-- MÓDULO 2: GRAMÁTICA DINÁMICA -->
     <section id="grammar" class="module">
       <div class="module-header">
         <h1>Laboratorio de Gramática Activa</h1>
         <p>Construye estructuras reales por bloques o detecta errores como un editor nativo.</p>
       </div>
 
-      <!-- Controles de Nivel y Modo -->
       <div class="grammar-controls">
         <div class="level-selector">
           <button class="lvl-btn active" data-level="basic">🟢 Básico (A1-A2)</button>
@@ -85,12 +77,16 @@
         </div>
       </div>
 
-      <!-- Arena Interactiva de Gramática -->
       <div id="grammar-arena" class="card"></div>
     </section>
+
+    <!-- PLACEHOLDERS -->
+    <section id="pronunciation" class="module"><div class="card"><h2>🎙️ Estudio de Pronunciación (Paso 3)</h2><p>Próximamente: Reconocimiento de voz en tiempo real y pares mínimos.</p></div></section>
+    <section id="slang" class="module"><div class="card"><h2>🗣️ Modismos y Phrasal Verbs (Paso 4)</h2><p>Próximamente: Decodificador de inglés real y callejero.</p></div></section>
+    <section id="music" class="module"><div class="card"><h2>🎵 Music & Lyrics Lab (Paso 5)</h2><p>Próximamente: Reproductor de YouTube con letras interactivas.</p></div></section>
   </main>
-  
- <script src="app.js?v=6"></script>
-  <script src="grammar.js?v=6"></script>
+
+  <script src="./app.js?v=7"></script>
+  <script src="./grammar.js?v=7"></script>
 </body>
 </html>
