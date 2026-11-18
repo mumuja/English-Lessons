@@ -9,29 +9,51 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
 });
 
 // --- MOTOR DE VOZ NATIVO DIRECTO (SIN PETICIONES EXTERNAS NI ERROR 429) ---
-function speakText(text, rate = 1.0) {
+// --- MOTOR DE VOZ CON CACHÉ BLOB (SIN ERROR 429 NI DEPENDER DE VOCES DEL SO) ---
+const audioCache = new Map();
+
+async function speakText(text, rate = 1.0) {
   const cleanText = text.trim();
-  if (!cleanText || !('speechSynthesis' in window)) return;
+  if (!cleanText) return;
 
-  window.speechSynthesis.cancel();
-  window.speechSynthesis.resume();
+  // 1. Si el navegador tiene voces nativas cargadas, usarlas al instante
+  if ('speechSynthesis' in window) {
+    const voices = window.speechSynthesis.getVoices();
+    if (voices.length > 0) {
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.resume();
+      const enVoice =
+        voices.find(v => v.name.includes('Google US English')) ||
+        voices.find(v => v.lang === 'en-US') ||
+        voices.find(v => v.lang.startsWith('en'));
 
-  const utterance = new SpeechSynthesisUtterance(cleanText);
-  utterance.lang = 'en-US';
-  utterance.rate = rate;
-  utterance.pitch = 1.0;
-
-  const voices = window.speechSynthesis.getVoices();
-  const enVoice =
-    voices.find(v => v.name.includes('Google US English')) ||
-    voices.find(v => v.lang === 'en-US') ||
-    voices.find(v => v.lang.startsWith('en'));
-
-  if (enVoice) {
-    utterance.voice = enVoice;
+      const utterance = new SpeechSynthesisUtterance(cleanText);
+      if (enVoice) utterance.voice = enVoice;
+      utterance.lang = 'en-US';
+      utterance.rate = rate;
+      window.speechSynthesis.speak(utterance);
+      return;
+    }
   }
 
-  window.speechSynthesis.speak(utterance);
+  // 2. Respaldo por descarga Blob (evita NotSupportedError y usa caché en memoria)
+  try {
+    let blobUrl = audioCache.get(cleanText);
+    if (!blobUrl) {
+      const url = `https://api.streamelements.com/kappa/v2/speech?voice=Matthew&text=${encodeURIComponent(cleanText)}`;
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const blob = await response.blob();
+      blobUrl = URL.createObjectURL(blob);
+      audioCache.set(cleanText, blobUrl);
+    }
+
+    const audio = new Audio(blobUrl);
+    audio.playbackRate = rate;
+    await audio.play();
+  } catch (err) {
+    console.error('Fallo al reproducir audio TTS:', err);
+  }
 }
 
 // --- REPRODUCTOR SEGURO PARA EL BOTÓN NATIVO DE LA API ---
