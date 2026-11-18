@@ -8,7 +8,7 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
   });
 });
 
-// --- MOTOR DE VOZ BLINDADO (WEB SPEECH + FALLBACK EXTERNO) ---
+// --- MOTOR DE VOZ BLINDADO PARA PALABRAS Y ORACIONES COMPLETAS ---
 let availableVoices = [];
 
 function initVoices() {
@@ -23,6 +23,10 @@ if ('speechSynthesis' in window && window.speechSynthesis.onvoiceschanged !== un
 }
 
 function speakText(text, rate = 1.0) {
+  const cleanText = text.trim();
+  if (!cleanText) return;
+
+  // 1. Intentar con Web Speech API (usando voz en inglés si existe, o la voz por defecto del navegador)
   if ('speechSynthesis' in window) {
     window.speechSynthesis.cancel();
     if (availableVoices.length === 0) initVoices();
@@ -32,11 +36,12 @@ function speakText(text, rate = 1.0) {
       availableVoices.find(v => v.lang === 'en-US') ||
       availableVoices.find(v => v.lang.startsWith('en'));
 
-    if (voice) {
+    // Si hay al menos alguna voz disponible en el sistema, usar Web Speech API
+    if (voice || availableVoices.length > 0) {
       setTimeout(() => {
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.voice = voice;
-        utterance.lang = voice.lang;
+        const utterance = new SpeechSynthesisUtterance(cleanText);
+        if (voice) utterance.voice = voice;
+        utterance.lang = 'en-US';
         utterance.rate = rate;
         window.speechSynthesis.speak(utterance);
       }, 50);
@@ -44,24 +49,11 @@ function speakText(text, rate = 1.0) {
     }
   }
 
-  const fallbackUrl = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(text)}&type=2`;
-  const audio = new Audio(fallbackUrl);
+  // 2. Respaldo externo compatible con frases completas y signos de puntuación
+  const ttsUrl = `https://api.streamelements.com/kappa/v2/speech?voice=Brian&text=${encodeURIComponent(cleanText)}`;
+  const audio = new Audio(ttsUrl);
   audio.playbackRate = rate;
   audio.play().catch(err => console.error('Error en audio de respaldo:', err));
-}
-
-// --- REPRODUCTOR SEGURO PARA EL BOTÓN NATIVO DE LA API ---
-function playNativeAudio(rawUrl, fallbackWord) {
-  if (!rawUrl) {
-    speakText(fallbackWord, 1.0);
-    return;
-  }
-  const fixedUrl = rawUrl.startsWith('//') ? `https:${rawUrl}` : rawUrl;
-  const audio = new Audio(fixedUrl);
-
-  audio.play().catch(() => {
-    speakText(fallbackWord, 1.0);
-  });
 }
 
 // --- ALMACENAMIENTO LOCAL (ESTRUCTURA LISTA PARA SUPABASE) ---
