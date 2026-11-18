@@ -64,11 +64,29 @@
       </div>
     </section>
 
-    <!-- PLACEHOLDERS PARA LOS SIGUIENTES PASOS -->
-    <section id="grammar" class="module"><div class="card"><h2>🧩 Módulo de Gramática (Paso 2)</h2><p>Próximamente: Constructor de oraciones y cazador de errores.</p></div></section>
-    <section id="pronunciation" class="module"><div class="card"><h2>🎙️ Estudio de Pronunciación (Paso 3)</h2><p>Próximamente: Reconocimiento de voz en tiempo real y pares mínimos.</p></div></section>
-    <section id="slang" class="module"><div class="card"><h2>🗣️ Modismos y Phrasal Verbs (Paso 4)</h2><p>Próximamente: Decodificador de inglés real y callejero.</p></div></section>
-    <section id="music" class="module"><div class="card"><h2>🎵 Music & Lyrics Lab (Paso 5)</h2><p>Próximamente: Reproductor de YouTube con letras interactivas.</p></div></section>
+  <!-- MÓDULO 2: GRAMÁTICA DINÁMICA -->
+    <section id="grammar" class="module">
+      <div class="module-header">
+        <h1>Laboratorio de Gramática Activa</h1>
+        <p>Construye estructuras reales por bloques o detecta errores como un editor nativo.</p>
+      </div>
+
+      <!-- Controles de Nivel y Modo -->
+      <div class="grammar-controls">
+        <div class="level-selector">
+          <button class="lvl-btn active" data-level="basic">🟢 Básico (A1-A2)</button>
+          <button class="lvl-btn" data-level="intermediate">🟡 Intermedio (B1-B2)</button>
+          <button class="lvl-btn" data-level="advanced">🔴 Avanzado (C1)</button>
+        </div>
+        <div class="mode-selector">
+          <button class="mode-btn active" data-mode="builder">🧱 Constructor</button>
+          <button class="mode-btn" data-mode="hunter">🕵️ Cazador de Errores</button>
+        </div>
+      </div>
+
+      <!-- Arena Interactiva de Gramática -->
+      <div id="grammar-arena" class="card"></div>
+    </section>
   </main>
 
   <script src="app.js"></script>
