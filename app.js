@@ -8,18 +8,61 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
   });
 });
 
-// --- MOTOR DE VOZ MEJORADO (WEB SPEECH API + FALLBACK) ---
-let englishVoice = null;
+// --- MOTOR DE VOZ BLINDADO (WEB SPEECH + FALLBACK EXTERNO) ---
+let availableVoices = [];
 
-function loadVoices() {
-  const voices = window.speechSynthesis.getVoices();
-  if (voices.length > 0) {
-    // Prioriza voces de Google US English o cualquier voz en-US / en-GB
-    englishVoice =
-      voices.find(v => v.name.includes('Google US English')) ||
-      voices.find(v => v.lang === 'en-US') ||
-      voices.find(v => v.lang.startsWith('en'));
+function initVoices() {
+  availableVoices = window.speechSynthesis.getVoices();
+}
+
+initVoices();
+if (window.speechSynthesis.onvoiceschanged !== undefined) {
+  window.speechSynthesis.onvoiceschanged = initVoices;
+}
+
+function speakText(text, rate = 1.0) {
+  // 1. Intentar con Web Speech API si hay voces cargadas
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    if (availableVoices.length === 0) initVoices();
+
+    const voice =
+      availableVoices.find(v => v.lang === 'en-US') ||
+      availableVoices.find(v => v.lang.startsWith('en'));
+
+    if (voice) {
+      setTimeout(() => {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.voice = voice;
+        utterance.lang = voice.lang;
+        utterance.rate = rate;
+        window.speechSynthesis.speak(utterance);
+      }, 50);
+      return;
+    }
   }
+
+  // 2. Respaldo automático (si el navegador/SO no tiene voces en inglés instaladas)
+  const fallbackUrl = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(text)}&type=2`;
+  const audio = new Audio(fallbackUrl);
+  audio.playbackRate = rate;
+  audio.play().catch(err => console.error('Error en audio de respaldo:', err));
+}
+
+// --- REPRODUCTOR SEGURO PARA EL BOTÓN NATIVO DE LA API ---
+function playNativeAudio(rawUrl, fallbackWord) {
+  if (!rawUrl) {
+    speakText(fallbackWord, 1.0);
+    return;
+  }
+  // Corrige URLs que vienen sin protocolo (ej: "//api.dictionaryapi.dev/...")
+  const fixedUrl = rawUrl.startsWith('//') ? `https:${rawUrl}` : rawUrl;
+  const audio = new Audio(fixedUrl);
+  
+  audio.play().catch(() => {
+    // Si el archivo MP3 de la API está roto, usa automáticamente speakText
+    speakText(fallbackWord, 1.0);
+  });
 }
 
 // Los navegadores cargan las voces de forma asíncrona
