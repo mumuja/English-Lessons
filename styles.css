@@ -93,3 +93,51 @@ body { background: var(--bg); color: var(--text); line-height: 1.6; }
 
 .review-box { border-color: var(--accent); text-align: center; }
 .review-input { padding: 0.7rem; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-size: 1.1rem; text-align: center; margin: 1rem 0; width: 100%; max-width: 320px; }
+/* --- ESTILOS MÓDULO 2: GRAMÁTICA --- */
+.grammar-controls {
+  display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; margin-bottom: 1.5rem;
+}
+.level-selector, .mode-selector { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+
+.lvl-btn, .mode-btn {
+  background: var(--surface); color: var(--text-muted); border: 1px solid var(--border);
+  padding: 0.5rem 0.9rem; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.2s;
+}
+.lvl-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(16, 185, 129, 0.1); }
+.mode-btn.active { border-color: var(--primary); color: var(--primary); background: rgba(56, 189, 248, 0.1); }
+
+/* Constructor de Bloques */
+.drop-zone {
+  min-height: 64px; background: var(--bg); border: 2px dashed var(--border); border-radius: 10px;
+  padding: 0.8rem; display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin: 1rem 0;
+}
+.word-bank {
+  display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0 1.5rem 0;
+}
+.word-chip {
+  background: var(--surface-hover); color: var(--text); border: 1px solid var(--border);
+  padding: 0.5rem 0.9rem; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 1rem;
+  transition: transform 0.1s, background 0.2s; user-select: none;
+}
+.word-chip:hover { border-color: var(--primary); transform: translateY(-2px); }
+.word-chip.used { opacity: 0.35; pointer-events: none; }
+.word-chip.placed { background: rgba(56, 189, 248, 0.2); border-color: var(--primary); color: var(--primary); }
+
+/* Cazador de Errores */
+.hunter-sentence {
+  font-size: 1.35rem; line-height: 2.2; background: var(--bg); padding: 1.2rem;
+  border-radius: 10px; margin: 1rem 0; border: 1px solid var(--border);
+}
+.hunt-word {
+  display: inline-block; padding: 0.15rem 0.45rem; margin: 0 0.15rem; border-radius: 6px;
+  cursor: pointer; transition: 0.15s; border-bottom: 2px dotted var(--text-muted);
+}
+.hunt-word:hover { background: var(--surface-hover); color: var(--primary); }
+.hunt-word.wrong-pick { background: rgba(239, 68, 68, 0.2); color: var(--danger); border-color: var(--danger); }
+.hunt-word.found-error { background: rgba(245, 158, 11, 0.25); color: #fbbf24; border-color: #fbbf24; }
+
+.correction-options { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 1rem; }
+.grammar-explanation {
+  margin-top: 1.2rem; padding: 1rem; border-radius: 8px; background: rgba(16, 185, 129, 0.1);
+  border-left: 4px solid var(--accent); font-size: 0.95rem;
+}
