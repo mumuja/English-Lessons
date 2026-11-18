@@ -196,3 +196,45 @@ body { background: var(--bg); color: var(--text); line-height: 1.6; }
 .slang-choice-btn:hover { border-color: var(--primary); background: var(--surface-hover); }
 .slang-choice-btn.correct { border-color: var(--accent); background: rgba(16, 185, 129, 0.15); color: var(--accent); font-weight: 700; }
 .slang-choice-btn.wrong { border-color: var(--danger); background: rgba(239, 68, 68, 0.15); color: var(--danger); }
+/* --- ESTILOS MÓDULO 5: MUSIC & LYRICS LAB --- */
+.music-search-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.6rem;
+}
+.music-search-grid input {
+  padding: 0.75rem 0.9rem; border-radius: 10px; border: 1px solid var(--border);
+  background: var(--bg); color: var(--text); font-size: 0.95rem; outline: none;
+}
+.music-search-grid input:focus { border-color: var(--primary); }
+
+.music-workspace {
+  display: grid; grid-template-columns: 1fr; gap: 1.5rem;
+}
+@media (min-width: 768px) {
+  .music-workspace { grid-template-columns: 340px 1fr; }
+}
+
+.video-wrapper {
+  position: relative; width: 100%; padding-bottom: 56.25%; background: #000;
+  border-radius: 10px; overflow: hidden; border: 1px solid var(--border);
+}
+.video-wrapper iframe {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;
+}
+
+.lyrics-container {
+  max-height: 430px; overflow-y: auto; background: var(--bg); padding: 1.2rem;
+  border-radius: 10px; border: 1px solid var(--border); line-height: 2.1; font-size: 1.05rem;
+}
+.lyric-line { margin-bottom: 0.5rem; }
+.clickable-word {
+  cursor: pointer; padding: 0.1rem 0.25rem; border-radius: 4px; transition: 0.15s;
+}
+.clickable-word:hover { background: rgba(56, 189, 248, 0.25); color: var(--primary); }
+
+.blank-input {
+  width: 110px; padding: 0.15rem 0.4rem; border-radius: 6px; border: 1px solid var(--primary);
+  background: var(--surface); color: var(--text); font-size: 0.95rem; text-align: center;
+  font-weight: 600; outline: none;
+}
+.blank-input.ok { border-color: var(--accent); background: rgba(16, 185, 129, 0.2); color: var(--accent); }
+.blank-input.bad { border-color: var(--danger); background: rgba(239, 68, 68, 0.2); color: var(--danger); }
