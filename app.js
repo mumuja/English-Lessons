@@ -8,7 +8,7 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
   });
 });
 
-// --- MOTOR DE VOZ NATIVO LIMPIO (CERO ERRORES HTTP 401/429) ---
+// --- MOTOR DE VOZ NATIVO LIMPIO (SIN PETICIONES EXTERNAS) ---
 function speakText(text, rate = 1.0) {
   const cleanText = text.trim();
   if (!cleanText || !('speechSynthesis' in window)) return;
@@ -31,26 +31,6 @@ function speakText(text, rate = 1.0) {
   utterance.pitch = 1.0;
 
   window.speechSynthesis.speak(utterance);
-}
-
-  // 2. Respaldo por descarga Blob (evita NotSupportedError y usa caché en memoria)
-  try {
-    let blobUrl = audioCache.get(cleanText);
-    if (!blobUrl) {
-      const url = `https://api.streamelements.com/kappa/v2/speech?voice=Matthew&text=${encodeURIComponent(cleanText)}`;
-      const response = await fetch(url);
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      const blob = await response.blob();
-      blobUrl = URL.createObjectURL(blob);
-      audioCache.set(cleanText, blobUrl);
-    }
-
-    const audio = new Audio(blobUrl);
-    audio.playbackRate = rate;
-    await audio.play();
-  } catch (err) {
-    console.error('Fallo al reproducir audio TTS:', err);
-  }
 }
 
 // --- REPRODUCTOR SEGURO PARA EL BOTÓN NATIVO DE LA API ---
