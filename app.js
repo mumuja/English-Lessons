@@ -12,21 +12,24 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
 let availableVoices = [];
 
 function initVoices() {
-  availableVoices = window.speechSynthesis.getVoices();
+  if ('speechSynthesis' in window) {
+    availableVoices = window.speechSynthesis.getVoices();
+  }
 }
 
 initVoices();
-if (window.speechSynthesis.onvoiceschanged !== undefined) {
+if ('speechSynthesis' in window && window.speechSynthesis.onvoiceschanged !== undefined) {
   window.speechSynthesis.onvoiceschanged = initVoices;
 }
 
 function speakText(text, rate = 1.0) {
-  // 1. Intentar con Web Speech API si hay voces cargadas
+  // 1. Intentar con Web Speech API si el sistema tiene voces en inglés
   if ('speechSynthesis' in window) {
     window.speechSynthesis.cancel();
     if (availableVoices.length === 0) initVoices();
 
     const voice =
+      availableVoices.find(v => v.name.includes('Google US English')) ||
       availableVoices.find(v => v.lang === 'en-US') ||
       availableVoices.find(v => v.lang.startsWith('en'));
 
@@ -42,7 +45,7 @@ function speakText(text, rate = 1.0) {
     }
   }
 
-  // 2. Respaldo automático (si el navegador/SO no tiene voces en inglés instaladas)
+  // 2. Respaldo automático si el navegador/SO no tiene voces locales instaladas
   const fallbackUrl = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(text)}&type=2`;
   const audio = new Audio(fallbackUrl);
   audio.playbackRate = rate;
@@ -55,48 +58,12 @@ function playNativeAudio(rawUrl, fallbackWord) {
     speakText(fallbackWord, 1.0);
     return;
   }
-  // Corrige URLs que vienen sin protocolo (ej: "//api.dictionaryapi.dev/...")
   const fixedUrl = rawUrl.startsWith('//') ? `https:${rawUrl}` : rawUrl;
   const audio = new Audio(fixedUrl);
-  
+
   audio.play().catch(() => {
-    // Si el archivo MP3 de la API está roto, usa automáticamente speakText
     speakText(fallbackWord, 1.0);
   });
-}
-
-// Los navegadores cargan las voces de forma asíncrona
-loadVoices();
-if (window.speechSynthesis.onvoiceschanged !== undefined) {
-  window.speechSynthesis.onvoiceschanged = loadVoices;
-}
-
-function speakText(text, rate = 1.0) {
-  if (!('speechSynthesis' in window)) {
-    alert('Tu navegador no soporta síntesis de voz.');
-    return;
-  }
-
-  // Si estaba pausado o trabado, lo reinicia suavemente
-  if (window.speechSynthesis.speaking) {
-    window.speechSynthesis.cancel();
-  }
-
-  // Pequeña pausa de 50ms para evitar el bug de Chrome donde cancel() mata el siguiente speak()
-  setTimeout(() => {
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'en-US';
-    utterance.rate = rate;
-    utterance.pitch = 1.0;
-    utterance.volume = 1.0;
-
-    if (!englishVoice) loadVoices();
-    if (englishVoice) {
-      utterance.voice = englishVoice;
-    }
-
-    window.speechSynthesis.speak(utterance);
-  }, 50);
 }
 
 // --- ALMACENAMIENTO LOCAL (ESTRUCTURA LISTA PARA SUPABASE) ---
@@ -136,7 +103,7 @@ async function lookupWord(word) {
 function renderDictionaryCard(entry) {
   const phonetic = entry.phonetic || (entry.phonetics.find(p => p.text)?.text) || '';
   const audioObj = entry.phonetics.find(p => p.audio && p.audio.length > 0);
-  const realAudioUrl = audioObj ? audioObj.audio : null;
+  const realAudioUrl = audioObj ? audioObj.audio : '';
 
   let meaningsHTML = '';
   let firstDefinition = '';
@@ -147,14 +114,18 @@ function renderDictionaryCard(entry) {
     if (!firstDefinition) firstDefinition = def.definition;
     if (!firstExample && def.example) firstExample = def.example;
 
+    const safeExample = def.example ? def.example.replace(/'/g, "\\'") : '';
+
     meaningsHTML += `
       <div class="meaning-block">
         <span class="pos-tag">${m.partOfSpeech}</span>
         <p><strong>Definición:</strong> ${def.definition}</p>
-        ${def.example ? `<p class="example-text">"${def.example}" <button class="btn-audio" onclick="speakText('${def.example.replace(/'/g, "\\'")}')">🔊</button></p>` : ''}
+        ${def.example ? `<p class="example-text">"${def.example}" <button class="btn-audio" onclick="speakText('${safeExample}')">🔊</button></p>` : ''}
       </div>
     `;
   });
+
+  const safeWord = entry.word.replace(/'/g, "\\'");
 
   resultBox.innerHTML = `
     <div class="word-title-row">
@@ -162,9 +133,9 @@ function renderDictionaryCard(entry) {
         <h2>${entry.word} <span class="phonetic">${phonetic}</span></h2>
       </div>
       <div class="audio-controls">
-        <button class="btn-audio" onclick="speakText('${entry.word}', 1.0)">🔊 Normal</button>
-        <button class="btn-audio" onclick="speakText('${entry.word}', 0.65)">🐢 Lento</button>
-        ${realAudioUrl ? `<button class="btn-audio" onclick="new Audio('${realAudioUrl}').play()">🎙️ Nativo</button>` : ''}
+        <button class="btn-audio" onclick="speakText('${safeWord}', 1.0)">🔊 Normal</button>
+        <button class="btn-audio" onclick="speakText('${safeWord}', 0.65)">🐢 Lento</button>
+        ${realAudioUrl ? `<button class="btn-audio" onclick="playNativeAudio('${realAudioUrl}', '${safeWord}')">🎙️ Nativo</button>` : ''}
         <button class="btn-save" id="save-word-btn">+ Guardar en Mazo</button>
       </div>
     </div>
@@ -177,7 +148,7 @@ function renderDictionaryCard(entry) {
       phonetic,
       definition: firstDefinition,
       example: firstExample || `I need to practice using the word "${entry.word}".`,
-      box: 1, // Nivel SRS (1 a 5)
+      box: 1,
       nextReview: Date.now()
     });
   });
@@ -209,22 +180,25 @@ function renderDeck() {
     return;
   }
 
-  list.innerHTML = deck.map(item => `
-    <div class="saved-card">
-      <div>
-        <h3>
-          <span>${item.word}</span>
-          <span class="srs-badge">Nivel ${item.box}/5</span>
-        </h3>
-        <small style="color: var(--text-muted);">${item.phonetic}</small>
-        <p style="font-size: 0.9rem; margin-top: 0.5rem;">${item.definition}</p>
+  list.innerHTML = deck.map(item => {
+    const safeWord = item.word.replace(/'/g, "\\'");
+    return `
+      <div class="saved-card">
+        <div>
+          <h3>
+            <span>${item.word}</span>
+            <span class="srs-badge">Nivel ${item.box}/5</span>
+          </h3>
+          <small style="color: var(--text-muted);">${item.phonetic}</small>
+          <p style="font-size: 0.9rem; margin-top: 0.5rem;">${item.definition}</p>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:0.8rem;">
+          <button class="btn-audio" onclick="speakText('${safeWord}')">🔊 Escuchar</button>
+          <button class="delete-btn" onclick="removeWord('${safeWord}')">Eliminar</button>
+        </div>
       </div>
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:0.8rem;">
-        <button class="btn-audio" onclick="speakText('${item.word}')">🔊 Escuchar</button>
-        <button class="delete-btn" onclick="removeWord('${item.word}')">Eliminar</button>
-      </div>
-    </div>
-  `).join('');
+    `;
+  }).join('');
 }
 
 // --- MODO PRÁCTICA ACTIVA (REPASO) ---
@@ -237,16 +211,16 @@ function startReviewSession() {
     alert('Agrega al menos una palabra a tu mazo para practicar.');
     return;
   }
-  // Selecciona una palabra priorizando las de nivel SRS más bajo
   const sorted = [...deck].sort((a, b) => a.box - b.box);
   const target = sorted[0];
+  const safeWord = target.word.replace(/'/g, "\\'");
 
   reviewArena.classList.remove('hidden');
   reviewArena.innerHTML = `
     <p style="color: var(--text-muted); font-size: 0.9rem;">Escucha la pronunciación y lee la pista. Escribe la palabra en inglés:</p>
     <div style="margin: 0.8rem 0;">
-      <button class="btn-audio" onclick="speakText('${target.word}', 1.0)">🔊 Escuchar Palabra</button>
-      <button class="btn-audio" onclick="speakText('${target.word}', 0.6)">🐢 Escuchar Lento</button>
+      <button class="btn-audio" onclick="speakText('${safeWord}', 1.0)">🔊 Escuchar Palabra</button>
+      <button class="btn-audio" onclick="speakText('${safeWord}', 0.6)">🐢 Escuchar Lento</button>
     </div>
     <p><strong>Definición:</strong> ${target.definition}</p>
     <input type="text" id="review-answer" class="review-input" placeholder="Escribe la palabra..." autocomplete="off" />
