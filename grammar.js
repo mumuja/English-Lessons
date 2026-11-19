@@ -1,4 +1,4 @@
-// --- GUÍA DE 30 REGLAS GRAMATICALES COTIDIANAS POR NIVEL (10 POR NIVEL) ---
+// --- GUÍA DE 41 REGLAS GRAMATICALES COTIDIANAS POR NIVEL ---
 const GRAMMAR_RULES_GUIDE = {
   basic: [
     {
@@ -74,7 +74,34 @@ const GRAMMAR_RULES_GUIDE = {
       tip: "💡 Excepción clave: se dice 'in the morning/afternoon/evening', pero 'at night' y 'on the weekend'."
     },
     {
-      title: "9. Pronombres Objeto y Posesivos ('Me / Him / Her / Their')",
+      title: "9. Preposiciones de Lugar ('In / On / At / Next to')",
+      formula: "IN + espacio cerrado/ciudad | ON + superficie | AT + punto específico (trabajo, puerta, parada)",
+      examples: [
+        { en: "Your keys are on the table, inside the blue tray.", es: "Tus llaves están sobre la mesa, dentro de la bandeja azul." },
+        { en: "I'm at the entrance, next to the coffee shop.", es: "Estoy en la entrada, al lado de la cafetería." }
+      ],
+      tip: "💡 Se dice 'in the car' (carro cerrado), pero 'on the bus / on the plane / on the train' (transporte público)."
+    },
+    {
+      title: "10. Modales Básicos de Habilidad y Permiso ('Can / Could')",
+      formula: "can / could + verbo base (sin 'to' y sin '-s' en tercera persona)",
+      examples: [
+        { en: "Could I get the bill, please?", es: "¿Me podría traer la cuenta, por favor? (más educado que 'Can')." },
+        { en: "She can speak three languages fluently.", es: "Ella puede hablar tres idiomas con fluidez." }
+      ],
+      tip: "⚠️ Nunca agregues 'to' después de 'can' o 'could' ('I can help you', nunca 'I can to help you')."
+    },
+    {
+      title: "11. Posesivos ('s vs Adjetivos Posesivos)",
+      formula: "Dueño + 's + cosa | my, your, his, her, its, our, their",
+      examples: [
+        { en: "That's my brother's car parked outside.", es: "Ese es el carro de mi hermano estacionado afuera." },
+        { en: "She forgot her keys on his desk.", es: "Ella olvidó sus llaves (de ella) en su escritorio (de él)." }
+      ],
+      tip: "⚠️ Evita decir 'the car of my brother'; en inglés para personas se usa casi siempre 'my brother's car'."
+    },
+    {
+      title: "12. Pronombres Objeto ('Me / Him / Her / Them')",
       formula: "Después de verbo o preposición: me, you, him, her, it, us, them",
       examples: [
         { en: "Can you send it to me when you finish?", es: "¿Me lo puedes enviar cuando termines?" },
@@ -83,7 +110,16 @@ const GRAMMAR_RULES_GUIDE = {
       tip: "⚠️ No confundas 'he/she' (quien hace la acción) con 'him/her' (quien la recibe: 'Call her', no 'Call she')."
     },
     {
-      title: "10. Comparativos y Superlativos Cotidianos",
+      title: "13. Verbos de Gusto y Preferencia + '-ing'",
+      formula: "like / love / enjoy / hate + verbo(-ing)",
+      examples: [
+        { en: "I love cooking on weekends, but I hate washing dishes.", es: "Me encanta cocinar los fines de semana, pero odio lavar platos." },
+        { en: "Do you like working from home?", es: "¿Te gusta trabajar desde casa?" }
+      ],
+      tip: "💡 Después de 'like', 'love' y 'hate' usar '-ing' suena mucho más natural que usar 'to + verbo'."
+    },
+    {
+      title: "14. Comparativos y Superlativos Cotidianos",
       formula: "Cortos: -er than / the -est | Largos: more ... than / the most ...",
       examples: [
         { en: "This route is faster than the highway.", es: "Esta ruta es más rápida que la autopista." },
@@ -148,7 +184,43 @@ const GRAMMAR_RULES_GUIDE = {
       tip: "⚠️ Nunca digas 'I enjoy to play'; después de 'enjoy', 'finish' y 'avoid' siempre va gerundio (-ing)."
     },
     {
-      title: "7. Modales de Obligación y Consejo ('Should / Must / Have to')",
+      title: "7. Phrasal Verbs Separables con Pronombres",
+      formula: "Con sustantivo: turn off the TV / turn the TV off | Con pronombre: turn IT off (obligatorio en medio)",
+      examples: [
+        { en: "The music is too loud, can you turn it down?", es: "La música está muy alta, ¿le puedes bajar?" },
+        { en: "Here is the form — please fill it out and send it back.", es: "Aquí está el formulario — por favor llénalo y envíalo de vuelta." }
+      ],
+      tip: "⚠️ Regla de oro: si usas 'it', 'them', 'him' o 'her' en un phrasal verb separable, SIEMPRE va en medio ('pick it up', nunca 'pick up it')."
+    },
+    {
+      title: "8. Estilo Indirecto ('Reported Speech': Say vs Tell)",
+      formula: "say (that) + frase | tell + PERSONA + frase (retrocediendo un tiempo verbal)",
+      examples: [
+        { en: "He told me that he was busy today.", es: "Él me dijo que estaba ocupado hoy." },
+        { en: "She said she would call us after the meeting.", es: "Ella dijo que nos llamaría después de la reunión." }
+      ],
+      tip: "⚠️ Diferencia clave: 'tell' SIEMPRE lleva a quién se lo dijiste ('told me', 'told us'); 'say' no ('said to me' o 'said that...')."
+    },
+    {
+      title: "9. Modales de Probabilidad Presente ('Must / Might / Can't')",
+      formula: "must + verbo (95% seguro) | might / could + verbo (50% posible) | can't + verbo (imposible)",
+      examples: [
+        { en: "You've been driving for 6 hours — you must be exhausted!", es: "Llevas 6 horas manejando — ¡debes estar agotado!" },
+        { en: "Take an umbrella, it might rain later.", es: "Lleva paraguas, puede que llueva más tarde." }
+      ],
+      tip: "💡 El opuesto lógico de 'must be' para deducciones no es 'mustn't be', sino 'can't be' ('That can't be true!')."
+    },
+    {
+      title: "10. Conectores de Contraste y Causa ('Although / Despite / Because of')",
+      formula: "Although + sujeto + verbo | Despite / In spite of + sustantivo o -ing",
+      examples: [
+        { en: "Although it was raining, we went out for dinner.", es: "Aunque estaba lloviendo, salimos a cenar." },
+        { en: "Despite the heavy traffic, we arrived on time.", es: "A pesar del tráfico pesado, llegamos a tiempo." }
+      ],
+      tip: "⚠️ Nunca digas 'Despite of' (es 'Despite' solo, o 'In spite of')."
+    },
+    {
+      title: "11. Modales de Obligación y Consejo ('Should / Must / Have to')",
       formula: "Consejo: should | Obligación externa: have to | Prohibición: mustn't | No necesario: don't have to",
       examples: [
         { en: "You don't have to wear a suit, it's casual.", es: "No tienes que usar traje, es casual (no es obligatorio)." },
@@ -157,7 +229,7 @@ const GRAMMAR_RULES_GUIDE = {
       tip: "⚠️ Diferencia crítica: 'mustn't' = prohibido hacerlo; 'don't have to' = no hace falta hacerlo, pero puedes si quieres."
     },
     {
-      title: "8. Voz Pasiva Cotidiana (Cuando importa la acción, no quién la hizo)",
+      title: "12. Voz Pasiva Cotidiana (Cuando importa la acción, no quién la hizo)",
       formula: "be (is/was/has been) + participio pasado",
       examples: [
         { en: "My car is being repaired right now.", es: "Mi carro está siendo reparado ahora mismo." },
@@ -166,7 +238,7 @@ const GRAMMAR_RULES_GUIDE = {
       tip: "💡 Úsalo mucho cuando hables de envíos, reparaciones, reglas o noticias."
     },
     {
-      title: "9. Cláusulas Relativas ('Who / Which / That / Where')",
+      title: "13. Cláusulas Relativas ('Who / Which / That / Where')",
       formula: "Personas: who/that | Cosas: which/that | Lugares: where | Posesión: whose",
       examples: [
         { en: "The guy who fixed my laptop did a great job.", es: "El chico que arregló mi laptop hizo un gran trabajo." },
@@ -175,7 +247,7 @@ const GRAMMAR_RULES_GUIDE = {
       tip: "🗣️ En conversación, cuando 'that/who/which' es el objeto, los nativos lo omiten: 'The movie [that] we watched was awesome'."
     },
     {
-      title: "10. Preguntas Indirectas (Para sonar educado y natural)",
+      title: "14. Preguntas Indirectas (Para sonar educado y natural)",
       formula: "Could you tell me / Do you know + palabra pregunta + sujeto + verbo (sin invertir)",
       examples: [
         { en: "Do you know what time the store closes?", es: "¿Sabes a qué hora cierra la tienda? (no 'does the store close')." },
@@ -240,7 +312,25 @@ const GRAMMAR_RULES_GUIDE = {
       tip: "💡 Diferencia clave: 'I washed my car' (lo lavé yo mismo) vs 'I got my car washed' (pagué para que lo lavaran)."
     },
     {
-      title: "7. Inversiones Enfáticas (Nivel C1 / Ejecutivo)",
+      title: "7. Cleft Sentences (Enfatizar exactamente qué o quién)",
+      formula: "What + sujeto + verbo + is/was + énfasis | It was + énfasis + who/that + resto",
+      examples: [
+        { en: "What I really need right now is a strong cup of coffee.", es: "Lo que realmente necesito ahora mismo es una taza fuerte de café." },
+        { en: "It was the QA team that caught the bug before launch.", es: "Fue el equipo de QA el que detectó el error antes del lanzamiento." }
+      ],
+      tip: "💡 Recurso favorito de los nativos para dar énfasis dramático o aclarar malentendidos."
+    },
+    {
+      title: "8. Elipsis y Sustitución ('So / Neither / One / Ones')",
+      formula: "Acuerdo afirmativo: So do I / I think so | Negativo: Neither do I | Sustantivo: the red one",
+      examples: [
+        { en: "Are they coming tonight? — I think so, at least Sarah is.", es: "¿Vienen esta noche? — Creo que sí, al menos Sarah viene." },
+        { en: "I don't like waking up early. — Neither do I.", es: "No me gusta despertarme temprano. — A mí tampoco." }
+      ],
+      tip: "🗣️ Evita repetir sustantivos ya mencionados usando 'one' (singular) o 'ones' (plural): 'Which jacket? The black one'."
+    },
+    {
+      title: "9. Inversiones Enfáticas (Nivel C1 / Ejecutivo)",
       formula: "Adverbio negativo/restrictivo (Rarely, Never, Not only, Hardly) + auxiliar + sujeto + verbo",
       examples: [
         { en: "Rarely do we see such an immediate improvement.", es: "Rara vez vemos una mejora tan inmediata." },
@@ -249,7 +339,16 @@ const GRAMMAR_RULES_GUIDE = {
       tip: "💡 Úsalo en presentaciones, correos formales o entrevistas para sonar altamente articulado."
     },
     {
-      title: "8. Subjuntivo Formal tras Verbos de Recomendación",
+      title: "10. Inversiones en Condicionales Formales ('Should / Were / Had')",
+      formula: "Should you need... (= If you need) | Were I to... (= If I were to) | Had I known... (= If I had known)",
+      examples: [
+        { en: "Should you have any questions, please don't hesitate to reach out.", es: "Si llegara a tener alguna pregunta, no dude en contactarnos." },
+        { en: "Were we to expand to new markets, we would need more staff.", es: "Si fuéramos a expandirnos a nuevos mercados, necesitaríamos más personal." }
+      ],
+      tip: "💼 Estándar de oro en correos de negocios, contratos y atención al cliente ejecutiva."
+    },
+    {
+      title: "11. Subjuntivo Formal tras Verbos de Recomendación",
       formula: "suggest / recommend / insist / demand + that + sujeto + verbo base (sin -s ni 'to')",
       examples: [
         { en: "The doctor recommended that he take the medicine twice a day.", es: "El doctor recomendó que él tome la medicina dos veces al día." },
@@ -258,7 +357,7 @@ const GRAMMAR_RULES_GUIDE = {
       tip: "⚠️ Fíjate que en subjuntivo C1 se dice 'that he take' (sin -s) y 'that everyone be' (no 'is')."
     },
     {
-      title: "9. Cláusulas de Participio (Frases más ágiles y fluidas)",
+      title: "12. Cláusulas de Participio (Frases más ágiles y fluidas)",
       formula: "Verbo(-ing) o Participio(-ed) al inicio para unir dos acciones del mismo sujeto",
       examples: [
         { en: "Having finished the project early, we took the afternoon off.", es: "Habiendo terminado el proyecto temprano, nos tomamos la tarde libre." },
@@ -267,7 +366,7 @@ const GRAMMAR_RULES_GUIDE = {
       tip: "💡 Elimina conectores repetitivos como 'Because we had finished...' y hace tu inglés mucho más natural."
     },
     {
-      title: "10. 'Had better' vs 'Would rather' (Advertencias y Preferencias)",
+      title: "13. 'Had better' vs 'Would rather' (Advertencias y Preferencias)",
       formula: "had better + verbo base (más vale que...) | would rather + verbo base (preferiría...)",
       examples: [
         { en: "We'd better leave now or we'll miss the flight.", es: "Más vale que salgamos ahora o perderemos el vuelo." },
@@ -422,6 +521,7 @@ function generateDynamicGrammarExercise(level, mode) {
 // --- ESTADO DEL MÓDULO DE GRAMÁTICA ---
 let currentLevel = 'basic';
 let currentMode = 'rules';
+let rulesSearchQuery = '';
 let selectedIndices = [];
 
 const grammarArena = document.getElementById('grammar-arena');
@@ -431,6 +531,7 @@ document.querySelectorAll('#grammar .lvl-btn').forEach(btn => {
     document.querySelectorAll('#grammar .lvl-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     currentLevel = btn.dataset.level;
+    rulesSearchQuery = '';
     renderGrammarExercise();
   });
 });
@@ -457,35 +558,69 @@ function renderGrammarExercise() {
   }
 }
 
-// --- MODO 0: GUÍA DE REGLAS ESENCIALES ---
+// --- MODO 0: GUÍA DE REGLAS ESENCIALES CON FILTRO RÁPIDO ---
 function renderRulesGuide(level) {
-  const rules = GRAMMAR_RULES_GUIDE[level];
+  const allRules = GRAMMAR_RULES_GUIDE[level];
+  const q = rulesSearchQuery.toLowerCase().trim();
+  const filteredRules = q
+    ? allRules.filter(r =>
+        r.title.toLowerCase().includes(q) ||
+        r.formula.toLowerCase().includes(q) ||
+        r.tip.toLowerCase().includes(q) ||
+        r.examples.some(ex => ex.en.toLowerCase().includes(q) || ex.es.toLowerCase().includes(q))
+      )
+    : allRules;
+
   grammarArena.innerHTML = `
-    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
-      Mostrando <strong>${rules.length} reglas esenciales</strong> para este nivel. Escucha los ejemplos y luego pasa a <strong>🧱 Constructor</strong> o <strong>🕵️ Cazador de Errores</strong>:
-    </p>
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.8rem; margin-bottom: 1rem;">
+      <p style="color: var(--text-muted); font-size: 0.9rem;">
+        Mostrando <strong>${filteredRules.length} de ${allRules.length} reglas esenciales</strong>. Escucha los ejemplos y practica luego en 🧱 Constructor o 🕵️ Cazador:
+      </p>
+      <input
+        type="text"
+        id="rules-filter-input"
+        value="${rulesSearchQuery.replace(/"/g, '&quot;')}"
+        placeholder="🔍 Filtrar tema (ej. pasado, condicional, can, for)..."
+        style="padding: 0.55rem 0.9rem; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-size: 0.9rem; min-width: 260px;"
+      />
+    </div>
+
     <div class="rules-grid">
-      ${rules.map(r => `
-        <div class="rule-card">
-          <h3>${r.title}</h3>
-          <div class="formula-badge">${r.formula}</div>
-          ${r.examples.map(ex => {
-            const safeEn = ex.en.replace(/'/g, "\\'");
-            return `
-              <div class="rule-example-row">
-                <div>
-                  <strong>${ex.en}</strong>
-                  <div style="color: var(--text-muted); font-size: 0.85rem;">${ex.es}</div>
+      ${filteredRules.length === 0
+        ? `<p style="color: var(--text-muted); text-align: center; padding: 1.5rem;">No hay reglas que coincidan con "${rulesSearchQuery}" en este nivel.</p>`
+        : filteredRules.map(r => `
+          <div class="rule-card">
+            <h3>${r.title}</h3>
+            <div class="formula-badge">${r.formula}</div>
+            ${r.examples.map(ex => {
+              const safeEn = ex.en.replace(/'/g, "\\'");
+              return `
+                <div class="rule-example-row">
+                  <div>
+                    <strong>${ex.en}</strong>
+                    <div style="color: var(--text-muted); font-size: 0.85rem;">${ex.es}</div>
+                  </div>
+                  <button class="btn-audio" onclick="speakText('${safeEn}', 1.0)">🔊</button>
                 </div>
-                <button class="btn-audio" onclick="speakText('${safeEn}', 1.0)">🔊</button>
-              </div>
-            `;
-          }).join('')}
-          <p class="rule-tip">${r.tip}</p>
-        </div>
-      `).join('')}
+              `;
+            }).join('')}
+            <p class="rule-tip">${r.tip}</p>
+          </div>
+        `).join('')}
     </div>
   `;
+
+  const filterInput = document.getElementById('rules-filter-input');
+  if (filterInput) {
+    filterInput.addEventListener('input', (e) => {
+      rulesSearchQuery = e.target.value;
+      const cursorPos = e.target.selectionStart;
+      renderRulesGuide(level);
+      const newInput = document.getElementById('rules-filter-input');
+      newInput.focus();
+      newInput.setSelectionRange(cursorPos, cursorPos);
+    });
+  }
 }
 
 // --- MODO 1: CONSTRUCTOR DE BLOQUES ---
