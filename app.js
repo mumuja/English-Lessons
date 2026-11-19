@@ -1,3 +1,15 @@
+// --- CONFIGURACIÓN SUPABASE ---
+// Pega aquí tus credenciales públicas (Project Settings -> API)
+const SUPABASE_URL = 'https://stzukfgxwsjuztjjmfov.supabase.co/rest/v1/';
+const SUPABASE_ANON_KEY = 'sb_publishable_sdKNxaC0HQUeGa3thZQAIg_yFoYwa3Z';
+
+const supabaseClient = (SUPABASE_URL.startsWith('https://') && !SUPABASE_URL.includes('TU_PROYECTO'))
+  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+  : null;
+
+let currentUser = null;
+let memoryDeck = [];
+
 // --- NAVEGACIÓN ENTRE MÓDULOS ---
 document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.addEventListener('click', () => {
@@ -8,7 +20,7 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
   });
 });
 
-// --- MOTOR DE VOZ NATIVO LIMPIO (SIN PETICIONES EXTERNAS) ---
+// --- MOTOR DE VOZ NATIVO LIMPIO ---
 function speakText(text, rate = 1.0) {
   const cleanText = text.trim();
   if (!cleanText || !('speechSynthesis' in window)) return;
@@ -33,7 +45,6 @@ function speakText(text, rate = 1.0) {
   window.speechSynthesis.speak(utterance);
 }
 
-// --- REPRODUCTOR SEGURO PARA EL BOTÓN NATIVO DE LA API ---
 function playNativeAudio(rawUrl, fallbackWord) {
   if (!rawUrl) {
     speakText(fallbackWord, 1.0);
@@ -44,16 +55,174 @@ function playNativeAudio(rawUrl, fallbackWord) {
   audio.play().catch(() => speakText(fallbackWord, 1.0));
 }
 
-// --- ALMACENAMIENTO LOCAL (ESTRUCTURA LISTA PARA SUPABASE) ---
+// --- GESTIÓN HÍBRIDA DEL MAZO (SUPABASE + RESPALDO LOCALSTORAGE) ---
 const STORAGE_KEY = 'english_lab_deck_v1';
 
 function getDeck() {
-  return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+  return memoryDeck;
 }
 
-function saveDeck(deck) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(deck));
+async function loadUserDeck() {
+  if (supabaseClient && currentUser) {
+    const { data, error } = await supabaseClient
+      .from('user_deck')
+      .select('*')
+      .eq('user_id', currentUser.id)
+      .order('created_at', { ascending: false });
+
+    if (!error && data) {
+      memoryDeck = data.map(row => ({
+        word: row.word,
+        phonetic: row.phonetic,
+        definition: row.definition,
+        example: row.example,
+        box: row.box,
+        nextReview: row.next_review
+      }));
+      renderDeck();
+      return;
+    }
+  }
+  // Si no hay sesión iniciada, usa localStorage
+  memoryDeck = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
   renderDeck();
+}
+
+async function addWordToDeck(item) {
+  if (memoryDeck.some(w => w.word.toLowerCase() === item.word.toLowerCase())) {
+    alert('Esta palabra o expresión ya está en tu mazo.');
+    return;
+  }
+
+  memoryDeck.unshift(item);
+  renderDeck();
+
+  if (supabaseClient && currentUser) {
+    const { error } = await supabaseClient.from('user_deck').insert([{
+      user_id: currentUser.id,
+      word: item.word,
+      phonetic: item.phonetic || '',
+      definition: item.definition,
+      example: item.example || '',
+      box: item.box || 1,
+      next_review: item.nextReview || Date.now()
+    }]);
+    if (error) console.error('Error guardando en Supabase:', error.message);
+  } else {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(memoryDeck));
+  }
+}
+
+async function updateWordBox(word, newBox) {
+  memoryDeck = memoryDeck.map(w => w.word === word ? { ...w, box: newBox } : w);
+  renderDeck();
+
+  if (supabaseClient && currentUser) {
+    await supabaseClient
+      .from('user_deck')
+      .update({ box: newBox, next_review: Date.now() })
+      .eq('user_id', currentUser.id)
+      .eq('word', word);
+  } else {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(memoryDeck));
+  }
+}
+
+async function removeWord(word) {
+  memoryDeck = memoryDeck.filter(w => w.word !== word);
+  renderDeck();
+
+  if (supabaseClient && currentUser) {
+    await supabaseClient
+      .from('user_deck')
+      .delete()
+      .eq('user_id', currentUser.id)
+      .eq('word', word);
+  } else {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(memoryDeck));
+  }
+}
+
+// --- AUTENTICACIÓN DE USUARIOS (SUPABASE AUTH) ---
+const authModal = document.getElementById('auth-modal');
+const authOpenBtn = document.getElementById('auth-open-btn');
+const authCloseBtn = document.getElementById('auth-close-btn');
+const authMsg = document.getElementById('auth-msg');
+
+authOpenBtn.onclick = () => {
+  authMsg.textContent = '';
+  authModal.classList.remove('hidden');
+};
+authCloseBtn.onclick = () => authModal.classList.add('hidden');
+
+function updateAuthUI() {
+  const loggedOutView = document.getElementById('auth-logged-out-view');
+  const loggedInView = document.getElementById('auth-logged-in-view');
+
+  if (currentUser) {
+    authOpenBtn.textContent = `☁️ ${currentUser.email.split('@')[0]}`;
+    authOpenBtn.style.borderColor = 'var(--accent)';
+    loggedOutView.classList.add('hidden');
+    loggedInView.classList.remove('hidden');
+    document.getElementById('user-email-label').textContent = currentUser.email;
+  } else {
+    authOpenBtn.textContent = '👤 Entrar';
+    authOpenBtn.style.borderColor = 'transparent';
+    loggedOutView.classList.remove('hidden');
+    loggedInView.classList.add('hidden');
+  }
+}
+
+if (supabaseClient) {
+  supabaseClient.auth.getSession().then(({ data: { session } }) => {
+    currentUser = session?.user || null;
+    updateAuthUI();
+    loadUserDeck();
+  });
+
+  supabaseClient.auth.onAuthStateChange((_event, session) => {
+    currentUser = session?.user || null;
+    updateAuthUI();
+    loadUserDeck();
+  });
+
+  document.getElementById('login-submit-btn').onclick = async () => {
+    const email = document.getElementById('auth-email').value.trim();
+    const password = document.getElementById('auth-password').value;
+    authMsg.style.color = 'var(--text-muted)';
+    authMsg.textContent = 'Conectando...';
+
+    const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+    if (error) {
+      authMsg.style.color = 'var(--danger)';
+      authMsg.textContent = `Error: ${error.message}`;
+    } else {
+      authModal.classList.add('hidden');
+    }
+  };
+
+  document.getElementById('signup-submit-btn').onclick = async () => {
+    const email = document.getElementById('auth-email').value.trim();
+    const password = document.getElementById('auth-password').value;
+    authMsg.style.color = 'var(--text-muted)';
+    authMsg.textContent = 'Creando cuenta...';
+
+    const { error } = await supabaseClient.auth.signUp({ email, password });
+    if (error) {
+      authMsg.style.color = 'var(--danger)';
+      authMsg.textContent = `Error: ${error.message}`;
+    } else {
+      authMsg.style.color = 'var(--accent)';
+      authMsg.textContent = '✅ ¡Cuenta creada! Ya puedes iniciar sesión.';
+    }
+  };
+
+  document.getElementById('logout-btn').onclick = async () => {
+    await supabaseClient.auth.signOut();
+    authModal.classList.add('hidden');
+  };
+} else {
+  loadUserDeck();
 }
 
 // --- CONSULTA A FREE DICTIONARY API ---
@@ -74,7 +243,7 @@ async function lookupWord(word) {
     const data = await res.json();
     renderDictionaryCard(data[0]);
   } catch (err) {
-    resultBox.innerHTML = `<p style="color: var(--danger);">No encontramos esa palabra exacta. Revisa la ortografía o intenta con su forma base (ej. "run" en vez de "running").</p>`;
+    resultBox.innerHTML = `<p style="color: var(--danger);">No encontramos esa palabra exacta. Revisa la ortografía o intenta con su forma base.</p>`;
   }
 }
 
@@ -130,21 +299,6 @@ function renderDictionaryCard(entry) {
       nextReview: Date.now()
     });
   });
-}
-
-function addWordToDeck(item) {
-  const deck = getDeck();
-  if (deck.some(w => w.word === item.word)) {
-    alert('Esta palabra ya está en tu mazo.');
-    return;
-  }
-  deck.unshift(item);
-  saveDeck(deck);
-}
-
-function removeWord(word) {
-  const deck = getDeck().filter(w => w.word !== word);
-  saveDeck(deck);
 }
 
 // --- RENDERIZAR MAZO GUARDADO ---
@@ -211,21 +365,19 @@ function startReviewSession() {
   speakText(target.word);
 
   document.getElementById('close-review-btn').onclick = () => reviewArena.classList.add('hidden');
-  document.getElementById('check-review-btn').onclick = () => {
+  document.getElementById('check-review-btn').onclick = async () => {
     const userAns = document.getElementById('review-answer').value.trim().toLowerCase();
     const feedback = document.getElementById('review-feedback');
 
     if (userAns === target.word.toLowerCase()) {
       feedback.style.color = 'var(--accent)';
       feedback.textContent = `¡Correcto! "${target.word}" sube de nivel.`;
-      const updatedDeck = getDeck().map(w => w.word === target.word ? { ...w, box: Math.min(5, w.box + 1) } : w);
-      saveDeck(updatedDeck);
+      await updateWordBox(target.word, Math.min(5, target.box + 1));
       setTimeout(startReviewSession, 1300);
     } else {
       feedback.style.color = 'var(--danger)';
       feedback.textContent = `Incorrecto. La palabra era "${target.word}". Intenta con la siguiente.`;
-      const updatedDeck = getDeck().map(w => w.word === target.word ? { ...w, box: 1 } : w);
-      saveDeck(updatedDeck);
+      await updateWordBox(target.word, 1);
       setTimeout(startReviewSession, 1800);
     }
   };
@@ -240,6 +392,3 @@ document.querySelectorAll('.tag-btn').forEach(btn => {
     lookupWord(btn.dataset.word);
   });
 });
-
-// Inicializar
-renderDeck();
