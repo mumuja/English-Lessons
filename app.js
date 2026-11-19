@@ -1,6 +1,6 @@
 // --- CONFIGURACIÓN SUPABASE ---
 // Pega aquí tus credenciales públicas (Project Settings -> API)
-const SUPABASE_URL = 'https://stzukfgxwsjuztjjmfov.supabase.co/rest/v1/';
+const SUPABASE_URL = 'https://stzukfgxwsjuztjjmfov.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_sdKNxaC0HQUeGa3thZQAIg_yFoYwa3Z';
 
 const supabaseClient = (SUPABASE_URL.startsWith('https://') && !SUPABASE_URL.includes('TU_PROYECTO'))
