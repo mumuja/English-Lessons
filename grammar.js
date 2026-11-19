@@ -1,113 +1,148 @@
-// --- BANCO DE EJERCICIOS DE GRAMÁTICA (A1 -> C1) ---
-const GRAMMAR_DATA = {
+// --- MOTOR DE GENERACIÓN PROCEDURAL INFINITA (A1 -> C1) ---
+const DYNAMIC_GRAMMAR_ENGINE = {
   basic: {
-    builder: [
-      {
-        prompt: "Pregunta por la rutina de otra persona (Presente Simple):",
-        spanish: "¿A qué hora empieza ella a trabajar?",
-        words: ["What time", "does", "she", "start", "work?"],
-        rule: "En preguntas en Presente Simple con 'he/she/it', usamos el auxiliar 'does' y el verbo principal ('start') va en forma base sin -s."
-      },
-      {
-        prompt: "Expresa algo que no hiciste ayer (Pasado Simple negativo):",
-        spanish: "Ellos no vieron el mensaje anoche.",
-        words: ["They", "didn't", "see", "the", "message", "last night."],
-        rule: "Después del auxiliar negativo 'didn't', el verbo principal siempre regresa a su forma base ('see', nunca 'saw')."
-      }
+    subjects: [
+      { subj: "She", auxPres: "does", auxNeg: "doesn't", isThird: true },
+      { subj: "He", auxPres: "does", auxNeg: "doesn't", isThird: true },
+      { subj: "My brother", auxPres: "does", auxNeg: "doesn't", isThird: true },
+      { subj: "They", auxPres: "do", auxNeg: "don't", isThird: false },
+      { subj: "You", auxPres: "do", auxNeg: "don't", isThird: false },
+      { subj: "We", auxPres: "do", auxNeg: "don't", isThird: false }
     ],
-    hunter: [
-      {
-        context: "Chat de trabajo:",
-        tokens: ["She", "don't", "have", "the", "keys", "today."],
-        errorIndex: 1,
-        options: ["doesn't", "isn't", "not"],
-        correctOption: "doesn't",
-        rule: "Con tercera persona singular ('She'), la negación en Presente Simple usa 'doesn't', no 'don't'."
-      },
-      {
-        context: "Planes del fin de semana:",
-        tokens: ["We", "are", "going", "to", "visiting", "my", "parents."],
-        errorIndex: 4,
-        options: ["visit", "visited", "visits"],
-        correctOption: "visit",
-        rule: "La estructura de futuro 'be going to' siempre va seguida del verbo en infinitivo sin -ing ('going to visit')."
-      }
+    actions: [
+      { base: "start work", third: "starts work", past: "started work", wrongIng: "starting work", es: "empezar a trabajar" },
+      { base: "study English", third: "studies English", past: "studied English", wrongIng: "studying English", es: "estudiar inglés" },
+      { base: "drink coffee", third: "drinks coffee", past: "drank coffee", wrongIng: "drinking coffee", es: "tomar café" },
+      { base: "visit the office", third: "visits the office", past: "visited the office", wrongIng: "visiting the office", es: "visitar la oficina" },
+      { base: "check emails", third: "checks emails", past: "checked emails", wrongIng: "checking emails", es: "revisar correos" },
+      { base: "cook dinner", third: "cooks dinner", past: "cooked dinner", wrongIng: "cooking dinner", es: "preparar la cena" }
+    ],
+    times: [
+      { en: "every morning", es: "todas las mañanas" },
+      { en: "on Mondays", es: "los lunes" },
+      { en: "after lunch", es: "después del almuerzo" },
+      { en: "at 8:00 AM", es: "a las 8:00 AM" }
     ]
   },
   intermediate: {
-    builder: [
-      {
-        prompt: "Experiencia de vida sin fecha exacta (Presente Perfecto):",
-        spanish: "¿Alguna vez has trabajado de forma remota?",
-        words: ["Have", "you", "ever", "worked", "remotely?"],
-        rule: "Usamos 'Have + sujeto + ever + participio pasado' para preguntar por experiencias en algún momento de la vida."
-      },
-      {
-        prompt: "Situación hipotética en el presente (Segundo Condicional):",
-        spanish: "Si tuviera más tiempo, aprendería otro idioma.",
-        words: ["If", "I", "had", "more time,", "I", "would", "learn", "another language."],
-        rule: "Segundo Condicional: 'If + Pasado Simple (had)' para la condición irreal, y 'would + verbo base' para el resultado."
-      }
+    conditions: [
+      { ifClause: "If I had more free time,", resClause: ["I", "would", "learn", "another language."], es: "Si tuviera más tiempo libre, aprendería otro idioma." },
+      { ifClause: "If she lived closer to work,", resClause: ["she", "would", "walk", "every day."], es: "Si ella viviera más cerca del trabajo, caminaría todos los días." },
+      { ifClause: "If we knew the password,", resClause: ["we", "could", "access", "the system."], es: "Si supiéramos la contraseña, podríamos acceder al sistema." },
+      { ifClause: "If they offered remote work,", resClause: ["I", "would", "accept", "the job."], es: "Si ofrecieran trabajo remoto, aceptaría el empleo." }
     ],
-    hunter: [
-      {
-        context: "Reunión de equipo:",
-        tokens: ["The", "final", "decision", "depends", "of", "the", "budget."],
-        errorIndex: 4,
-        options: ["on", "in", "at"],
-        correctOption: "on",
-        rule: "Falso amigo del español: en inglés siempre se dice 'depend on' (o 'depend upon'), nunca 'depend of'."
-      },
-      {
-        context: "Contando una anécdota:",
-        tokens: ["I", "have", "lived", "in", "this", "city", "since", "five", "years."],
-        errorIndex: 6,
-        options: ["for", "during", "from"],
-        correctOption: "for",
-        rule: "Usamos 'for' para períodos de duración ('for five years') y 'since' únicamente para un punto exacto en el tiempo ('since 2021')."
-      }
+    prepositionTraps: [
+      { tokens: ["The", "final", "result", "depends", "of", "our", "effort."], err: 4, ok: "on", opts: ["on", "in", "at"], rule: "En inglés se dice 'depend on', nunca 'depend of'." },
+      { tokens: ["We", "arrived", "to", "the", "airport", "very", "early."], err: 2, ok: "at", opts: ["at", "on", "for"], rule: "Usamos 'arrive at' para lugares específicos (aeropuerto, oficina) y 'arrive in' para ciudades o países, nunca 'arrive to'." },
+      { tokens: ["She", "is", "married", "with", "an", "architect."], err: 3, ok: "to", opts: ["to", "by", "at"], rule: "La combinación natural en inglés es 'married to', no 'married with'." },
+      { tokens: ["I", "have", "worked", "here", "since", "three", "years."], err: 4, ok: "for", opts: ["for", "during", "from"], rule: "'For' indica duración ('for three years'); 'since' indica el punto de inicio ('since 2023')." }
     ]
   },
   advanced: {
-    builder: [
-      {
-        prompt: "Arrepentimiento o hipótesis en el pasado (Tercer Condicional):",
-        spanish: "Si hubiera sabido del tráfico, habría salido más temprano.",
-        words: ["Had", "I", "known", "about", "the traffic,", "I", "would", "have", "left", "earlier."],
-        rule: "Inversión formal C1: 'Had I known...' equivale a 'If I had known...', dando un tono más sofisticado y natural."
-      },
-      {
-        prompt: "Énfasis con inversión negativa (Nivel C1):",
-        spanish: "Rara vez vemos un progreso tan rápido.",
-        words: ["Rarely", "do", "we", "see", "such", "rapid", "progress."],
-        rule: "Cuando una oración empieza con un adverbio negativo o restrictivo ('Rarely', 'Seldom', 'Never'), se invierte el auxiliar y el sujeto ('do we see')."
-      }
+    inversions: [
+      { lead: "Rarely", aux: "do", subj: "we", rest: ["see", "such", "consistent", "results."], es: "Rara vez vemos resultados tan consistentes.", rule: "Al iniciar con un adverbio restrictivo ('Rarely'), se invierte auxiliar + sujeto ('do we see')." },
+      { lead: "Never", aux: "have", subj: "I", rest: ["experienced", "such", "a", "smooth", "launch."], es: "Nunca he experimentado un lanzamiento tan fluido.", rule: "Tras 'Never' al inicio de la frase, invertimos 'have + sujeto' ('Never have I...')." },
+      { lead: "Not only", aux: "did", subj: "she", rest: ["finish", "the", "project,", "but", "she", "also", "led", "the", "demo."], es: "No solo terminó el proyecto, sino que también dirigió la demostración.", rule: "'Not only' al inicio exige inversión con auxiliar ('did she finish')." },
+      { lead: "Seldom", aux: "does", subj: "this", rest: ["opportunity", "arise", "twice."], es: "Pocas veces surge esta oportunidad dos veces.", rule: "'Seldom' (raramente) provoca inversión interrogativa ('does this opportunity arise')." }
     ],
-    hunter: [
-      {
-        context: "Correo ejecutivo:",
-        tokens: ["We", "look", "forward", "to", "hear", "from", "you", "soon."],
-        errorIndex: 4,
-        options: ["hearing", "heard", "be hearing"],
-        correctOption: "hearing",
-        rule: "En la expresión 'look forward to', el 'to' funciona como preposición, por lo que el verbo siguiente debe ir en gerundio (-ing): 'to hearing'."
-      },
-      {
-        context: "Negociación de proyecto:",
-        tokens: ["Not", "only", "she", "finished", "the", "report,", "but", "she", "also", "presented", "it."],
-        errorIndex: 2,
-        options: ["did she finish", "she did finish", "had she finish"],
-        correctOption: "did she finish",
-        rule: "Tras iniciar una cláusula con 'Not only', es obligatorio invertir el auxiliar antes del sujeto: 'Not only did she finish...'."
-      }
+    advancedTraps: [
+      { tokens: ["We", "look", "forward", "to", "hear", "from", "you", "soon."], err: 4, ok: "hearing", opts: ["hearing", "heard", "be hear"], rule: "Después de 'look forward to', el verbo siempre lleva -ing ('to hearing')." },
+      { tokens: ["Had", "I", "knew", "about", "the", "delay,", "I", "would", "have", "waited."], err: 2, ok: "known", opts: ["known", "know", "knowing"], rule: "En el Tercer Condicional invertido ('Had + sujeto + participio'), usamos 'known', no 'knew'." },
+      { tokens: ["She", "suggested", "me", "to", "apply", "for", "the", "position."], err: 2, ok: "that I", opts: ["that I", "for me", "me"], rule: "El verbo 'suggest' no lleva objeto indirecto + infinitivo ('suggest me to'); se usa 'suggest that I apply' o 'suggest applying'." }
     ]
   }
 };
 
+function pickRandom(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function generateDynamicGrammarExercise(level, mode) {
+  if (level === 'basic') {
+    const s = pickRandom(DYNAMIC_GRAMMAR_ENGINE.basic.subjects);
+    const a = pickRandom(DYNAMIC_GRAMMAR_ENGINE.basic.actions);
+    const t = pickRandom(DYNAMIC_GRAMMAR_ENGINE.basic.times);
+
+    if (mode === 'builder') {
+      const isQuestion = Math.random() > 0.5;
+      if (isQuestion) {
+        return {
+          prompt: `Forma una pregunta en Presente Simple (${a.es}):`,
+          spanish: `¿${s.subj} suele ${a.es} ${t.es}?`,
+          words: [s.auxPres === "does" ? "Does" : "Do", s.subj.toLowerCase() === "you" || s.subj.toLowerCase() === "we" || s.subj.toLowerCase() === "they" ? s.subj.toLowerCase() : s.subj, a.base, `${t.en}?`],
+          rule: `Con '${s.subj}', usamos el auxiliar '${s.auxPres}' al inicio y el verbo principal ('${a.base}') queda en forma base.`
+        };
+      } else {
+        return {
+          prompt: `Construye una oración negativa en Presente Simple:`,
+          spanish: `${s.subj} no ${a.es} ${t.es}.`,
+          words: [s.subj, s.auxNeg, a.base, `${t.en}.`],
+          rule: `Después de '${s.auxNeg}', el verbo principal ('${a.base}') nunca lleva '-s'.`
+        };
+      }
+    } else {
+      // Cazador de errores dinámico
+      const wrongAux = s.isThird ? "don't" : "doesn't";
+      const rightAux = s.auxNeg;
+      const baseWords = a.base.split(' ');
+      return {
+        context: "Mensaje diario:",
+        tokens: [s.subj, wrongAux, ...baseWords, `${t.en}.`],
+        errorIndex: 1,
+        options: [rightAux, "isn't", "not"],
+        correctOption: rightAux,
+        rule: `Con '${s.subj}', el auxiliar negativo correcto en Presente Simple es '${rightAux}', no '${wrongAux}'.`
+      };
+    }
+  }
+
+  if (level === 'intermediate') {
+    if (mode === 'builder') {
+      const c = pickRandom(DYNAMIC_GRAMMAR_ENGINE.intermediate.conditions);
+      return {
+        prompt: "Arma el Segundo Condicional (situación hipotética):",
+        spanish: c.es,
+        words: [c.ifClause, ...c.resClause],
+        rule: "Segundo Condicional: 'If + Pasado Simple' en la condición y 'would/could + verbo base' en el resultado."
+      };
+    } else {
+      const trap = pickRandom(DYNAMIC_GRAMMAR_ENGINE.intermediate.prepositionTraps);
+      return {
+        context: "Revisión de redacción:",
+        tokens: trap.tokens,
+        errorIndex: trap.err,
+        options: trap.opts,
+        correctOption: trap.ok,
+        rule: trap.rule
+      };
+    }
+  }
+
+  // Advanced (C1)
+  if (mode === 'builder') {
+    const inv = pickRandom(DYNAMIC_GRAMMAR_ENGINE.advanced.inversions);
+    return {
+      prompt: "Construye una inversión enfática de nivel C1:",
+      spanish: inv.es,
+      words: [inv.lead, inv.aux, inv.subj, ...inv.rest],
+      rule: inv.rule
+    };
+  } else {
+    const trap = pickRandom(DYNAMIC_GRAMMAR_ENGINE.advanced.advancedTraps);
+    return {
+      context: "Correo profesional C1:",
+      tokens: trap.tokens,
+      errorIndex: trap.err,
+      options: trap.opts,
+      correctOption: trap.ok,
+      rule: trap.rule
+    };
+  }
+}
+
 // --- ESTADO DEL MÓDULO DE GRAMÁTICA ---
 let currentLevel = 'basic';
 let currentMode = 'builder';
-let currentIndex = 0;
 let selectedIndices = [];
 
 const grammarArena = document.getElementById('grammar-arena');
@@ -117,7 +152,6 @@ document.querySelectorAll('.lvl-btn').forEach(btn => {
     document.querySelectorAll('.lvl-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     currentLevel = btn.dataset.level;
-    currentIndex = 0;
     renderGrammarExercise();
   });
 });
@@ -127,15 +161,12 @@ document.querySelectorAll('.mode-btn').forEach(btn => {
     document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     currentMode = btn.dataset.mode;
-    currentIndex = 0;
     renderGrammarExercise();
   });
 });
 
 function renderGrammarExercise() {
-  const list = GRAMMAR_DATA[currentLevel][currentMode];
-  const exercise = list[currentIndex % list.length];
-
+  const exercise = generateDynamicGrammarExercise(currentLevel, currentMode);
   if (currentMode === 'builder') {
     renderBuilder(exercise);
   } else {
@@ -167,7 +198,7 @@ function renderBuilder(ex) {
     <div style="display: flex; gap: 0.6rem; flex-wrap: wrap;">
       <button id="check-builder-btn" class="btn-primary">Comprobar Orden</button>
       <button id="reset-builder-btn" class="btn-audio">↺ Reiniciar</button>
-      <button id="next-grammar-btn" class="btn-audio">Siguiente ➔</button>
+      <button id="next-grammar-btn" class="btn-audio">🎲 Generar Nuevo ➔</button>
     </div>
 
     <div id="grammar-feedback"></div>
@@ -205,7 +236,7 @@ function renderBuilder(ex) {
   });
 
   document.getElementById('reset-builder-btn').onclick = () => renderBuilder(ex);
-  document.getElementById('next-grammar-btn').onclick = () => { currentIndex++; renderGrammarExercise(); };
+  document.getElementById('next-grammar-btn').onclick = () => renderGrammarExercise();
 
   document.getElementById('check-builder-btn').onclick = () => {
     const userSentence = selectedIndices.map(i => ex.words[i]).join(' ');
@@ -240,11 +271,11 @@ function renderHunter(ex) {
     <div id="hunter-step2"></div>
     <div id="grammar-feedback"></div>
     <div style="margin-top: 1rem;">
-      <button id="next-hunter-btn" class="btn-audio">Siguiente Ejercicio ➔</button>
+      <button id="next-hunter-btn" class="btn-audio">🎲 Generar Nuevo ➔</button>
     </div>
   `;
 
-  document.getElementById('next-hunter-btn').onclick = () => { currentIndex++; renderGrammarExercise(); };
+  document.getElementById('next-hunter-btn').onclick = () => renderGrammarExercise();
 
   document.querySelectorAll('.hunt-word').forEach(span => {
     span.onclick = () => {
@@ -290,5 +321,4 @@ function renderHunter(ex) {
   });
 }
 
-// Inicializar primer ejercicio
 renderGrammarExercise();
