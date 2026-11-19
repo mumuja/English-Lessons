@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>English Mastery Lab</title>
   <link rel="icon" href="data:," />
-  <link rel="stylesheet" href="./styles.css?v=13" />
+  <link rel="stylesheet" href="./styles.css?v=14" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
   <header class="topbar">
@@ -17,10 +18,38 @@
       <button class="tab-btn" data-tab="slang">🗣️ Modismos</button>
       <button class="tab-btn" data-tab="music">🎵 Música</button>
     </nav>
-    <div class="user-stats">
+    <div class="user-stats" style="display: flex; align-items: center; gap: 0.6rem;">
       <span id="deck-count">📚 Mazo: 0</span>
+      <button id="auth-open-btn" class="btn-audio" style="font-size: 0.85rem;">👤 Entrar</button>
     </div>
   </header>
+
+  <!-- MODAL DE LOGIN / REGISTRO SUPABASE -->
+  <div id="auth-modal" class="modal-backdrop hidden">
+    <div class="card modal-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h3 style="color: var(--primary);">☁️ Sincronización en la Nube</h3>
+        <button id="auth-close-btn" class="btn-audio">✕</button>
+      </div>
+      <div id="auth-logged-out-view">
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
+          Inicia sesión o crea una cuenta para guardar tu mazo en Supabase y acceder desde cualquier dispositivo.
+        </p>
+        <input type="email" id="auth-email" class="auth-input" placeholder="Correo electrónico..." />
+        <input type="password" id="auth-password" class="auth-input" placeholder="Contraseña (mín. 6 caracteres)..." />
+        <div style="display: flex; gap: 0.6rem; margin-top: 0.8rem;">
+          <button id="login-submit-btn" class="btn-primary" style="flex: 1;">Iniciar Sesión</button>
+          <button id="signup-submit-btn" class="btn-secondary" style="flex: 1;">Crear Cuenta</button>
+        </div>
+        <p id="auth-msg" style="margin-top: 0.8rem; font-size: 0.9rem; font-weight: 600;"></p>
+      </div>
+      <div id="auth-logged-in-view" class="hidden">
+        <p style="margin-bottom: 0.8rem;">Conectado como: <strong id="user-email-label" style="color: var(--accent);"></strong></p>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">Tu mazo SRS se sincroniza automáticamente con Supabase.</p>
+        <button id="logout-btn" class="btn-audio" style="width: 100%; color: var(--danger);">Cerrar Sesión</button>
+      </div>
+    </div>
+  </div>
 
   <main class="container">
     <!-- MÓDULO 1: VOCABULARIO Y DICCIONARIO INSTANTÁNEO -->
@@ -132,7 +161,6 @@
         <p>Practica oído con canciones reales, completa espacios en blanco y guarda vocabulario nuevo al instante.</p>
       </div>
 
-      <!-- Buscador en vivo de letras + YouTube -->
       <div class="card">
         <h3 style="margin-bottom: 0.6rem; color: var(--primary);">🎧 Carga cualquier canción (LRCLIB + YouTube)</h3>
         <div class="music-search-grid">
@@ -149,15 +177,14 @@
         </div>
       </div>
 
-      <!-- Arena de Reproducción y Ejercicio -->
       <div id="music-arena" class="card hidden"></div>
     </section>
   </main>
 
-  <script src="./app.js?v=13"></script>
-  <script src="./grammar.js?v=13"></script>
-  <script src="./pronunciation.js?v=13"></script>
-  <script src="./slang.js?v=13"></script>
-  <script src="./music.js?v=13"></script>
+  <script src="./app.js?v=14"></script>
+  <script src="./grammar.js?v=14"></script>
+  <script src="./pronunciation.js?v=14"></script>
+  <script src="./slang.js?v=14"></script>
+  <script src="./music.js?v=14"></script>
 </body>
 </html>
