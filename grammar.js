@@ -1,3 +1,121 @@
+// --- GUÍA DE REGLAS GRAMATICALES COTIDIANAS POR NIVEL ---
+const GRAMMAR_RULES_GUIDE = {
+  basic: [
+    {
+      title: "1. Verbo 'To Be' (Ser / Estar / Edad / Estados)",
+      formula: "I am | You/We/They are | He/She/It is",
+      examples: [
+        { en: "I'm ready to go, are you?", es: "Estoy listo para ir, ¿y tú?" },
+        { en: "She is 28 years old and she's from El Salvador.", es: "Ella tiene 28 años y es de El Salvador." }
+      ],
+      tip: "⚠️ En inglés la edad y el hambre/frío usan 'to be', nunca 'have' ('I am hungry', 'I am 30')."
+    },
+    {
+      title: "2. Presente Simple (Rutinas y Hábitos)",
+      formula: "Afirmativo: He/She/It + verbo(-s) | Pregunta/Negación: Do / Does + verbo base",
+      examples: [
+        { en: "He works from home on Fridays.", es: "Él trabaja desde casa los viernes." },
+        { en: "Does she speak English? — No, she doesn't.", es: "¿Ella habla inglés? — No." }
+      ],
+      tip: "💡 En cuanto aparece 'does' o 'doesn't', el verbo principal pierde la '-s' ('Does she work?', no 'works')."
+    },
+    {
+      title: "3. Futuro Cotidiano: 'Going to' vs 'Will'",
+      formula: "Plan decidido: am/is/are + going to + verbo | Decisión espontánea: will + verbo",
+      examples: [
+        { en: "We're going to watch a movie tonight.", es: "Vamos a ver una película esta noche (ya planeado)." },
+        { en: "The phone is ringing — I'll get it!", es: "Suena el teléfono — ¡Yo contesto! (decisión al instante)." }
+      ],
+      tip: "🗣️ En habla rápida, 'going to' suena casi siempre como 'gonna' ('I'm gonna call you')."
+    },
+    {
+      title: "4. Pasado Simple (Acciones terminadas)",
+      formula: "Sujeto + verbo en pasado (-ed o irregular) | Negación/Pregunta: didn't / Did + verbo base",
+      examples: [
+        { en: "I went to the beach last weekend.", es: "Fui a la playa el fin de semana pasado." },
+        { en: "Did you see my message? — Sorry, I didn't see it.", es: "¿Viste mi mensaje? — Perdón, no lo vi." }
+      ],
+      tip: "⚠️ Igual que con 'does', después de 'didn't' o 'Did' el verbo vuelve al presente ('didn't go', nunca 'didn't went')."
+    }
+  ],
+  intermediate: [
+    {
+      title: "1. Presente Perfecto (Experiencias y pasado conectado al hoy)",
+      formula: "have / has + participio pasado (worked, been, done, seen)",
+      examples: [
+        { en: "I've already finished the report.", es: "Ya terminé el informe (resultado visible ahora)." },
+        { en: "Have you ever tried sushi?", es: "¿Alguna vez has probado el sushi? (en tu vida, sin fecha)." }
+      ],
+      tip: "💡 Si mencionas CUÁNDO pasó ('yesterday', 'in 2024'), usa Pasado Simple ('I saw him yesterday'), no Presente Perfecto."
+    },
+    {
+      title: "2. 'For' vs 'Since' (Duración vs Inicio)",
+      formula: "FOR + cantidad de tiempo | SINCE + momento exacto de inicio",
+      examples: [
+        { en: "We have lived here for five years.", es: "Hemos vivido aquí durante cinco años." },
+        { en: "I've been waiting since 3:00 PM.", es: "He estado esperando desde las 3:00 PM." }
+      ],
+      tip: "⚠️ Nunca digas 'since five years' (calco del español 'desde hace 5 años'); usa siempre 'for five years'."
+    },
+    {
+      title: "3. Segundo Condicional (Situaciones hipotéticas o deseos)",
+      formula: "If + Pasado Simple, ... would / could + verbo base",
+      examples: [
+        { en: "If I had more free time, I would travel more.", es: "Si tuviera más tiempo libre, viajaría más." },
+        { en: "If I were you, I would take that offer.", es: "Si yo fuera tú, aceptaría esa oferta." }
+      ],
+      tip: "💡 En inglés natural se prefiere 'If I were you' en lugar de 'If I was you' para dar consejos."
+    },
+    {
+      title: "4. Verbos seguidos de '-ing' vs 'to + verbo'",
+      formula: "enjoy / mind / avoid / suggest + -ing | want / decide / need / promise + to",
+      examples: [
+        { en: "Would you mind opening the window?", es: "¿Te importaría abrir la ventana?" },
+        { en: "I'm looking forward to meeting you.", es: "Tengo muchas ganas de conocerte ('to' aquí es preposición + -ing)." }
+      ],
+      tip: "⚠️ Nunca digas 'I enjoy to play'; después de 'enjoy', 'finish' y 'avoid' siempre va gerundio (-ing)."
+    }
+  ],
+  advanced: [
+    {
+      title: "1. Tercer Condicional (Arrepentimientos e hipótesis del pasado)",
+      formula: "If + had + participio, ... would have + participio",
+      examples: [
+        { en: "If I had known about the traffic, I would have left earlier.", es: "Si hubiera sabido del tráfico, habría salido más temprano." },
+        { en: "She wouldn't have missed the flight if she had set an alarm.", es: "No habría perdido el vuelo si hubiera puesto alarma." }
+      ],
+      tip: "🗣️ Al hablar rápido, 'would have' se contrae en 'would've' (suena como 'wud-of')."
+    },
+    {
+      title: "2. 'Used to' vs 'Be used to' vs 'Get used to'",
+      formula: "used to + verbo (antes sí, ya no) | be/get used to + -ing/sustantivo (estar/acostumbrarse)",
+      examples: [
+        { en: "I used to drive a manual car, now I drive an automatic.", es: "Antes manejaba carro estándar, ahora manejo automático." },
+        { en: "I'm getting used to waking up early.", es: "Me estoy acostumbrando a despertarme temprano." }
+      ],
+      tip: "⚠️ Cuando lleva 'be' o 'get' delante, 'used to' exige gerundio (-ing) o un sustantivo."
+    },
+    {
+      title: "3. Modales de Deducción en el Pasado ('Must have / Might have')",
+      formula: "must have + participio (seguro pasó) | might/could have + participio (quizás pasó)",
+      examples: [
+        { en: "The streets are wet; it must have rained last night.", es: "Las calles están mojadas; seguro llovió anoche." },
+        { en: "He didn't answer; he might have left his phone at home.", es: "No contestó; puede que haya dejado su teléfono en casa." }
+      ],
+      tip: "💡 Es la forma más natural de especular sobre algo que ya ocurrió."
+    },
+    {
+      title: "4. Inversiones Enfáticas (Nivel C1 / Ejecutivo)",
+      formula: "Adverbio negativo/restrictivo (Rarely, Never, Not only) + auxiliar + sujeto + verbo",
+      examples: [
+        { en: "Rarely do we see such an immediate improvement.", es: "Rara vez vemos una mejora tan inmediata." },
+        { en: "Not only did they finish on time, but they also saved budget.", es: "No solo terminaron a tiempo, sino que también ahorraron presupuesto." }
+      ],
+      tip: "💡 Úsalo en presentaciones, correos formales o entrevistas para sonar altamente articulado."
+    }
+  ]
+};
+
 // --- MOTOR DE GENERACIÓN PROCEDURAL INFINITA (A1 -> C1) ---
 const DYNAMIC_GRAMMAR_ENGINE = {
   basic: {
@@ -66,10 +184,11 @@ function generateDynamicGrammarExercise(level, mode) {
     if (mode === 'builder') {
       const isQuestion = Math.random() > 0.5;
       if (isQuestion) {
+        const subjFormatted = ["you", "we", "they"].includes(s.subj.toLowerCase()) ? s.subj.toLowerCase() : s.subj;
         return {
           prompt: `Forma una pregunta en Presente Simple (${a.es}):`,
           spanish: `¿${s.subj} suele ${a.es} ${t.es}?`,
-          words: [s.auxPres === "does" ? "Does" : "Do", s.subj.toLowerCase() === "you" || s.subj.toLowerCase() === "we" || s.subj.toLowerCase() === "they" ? s.subj.toLowerCase() : s.subj, a.base, `${t.en}?`],
+          words: [s.auxPres === "does" ? "Does" : "Do", subjFormatted, a.base, `${t.en}?`],
           rule: `Con '${s.subj}', usamos el auxiliar '${s.auxPres}' al inicio y el verbo principal ('${a.base}') queda en forma base.`
         };
       } else {
@@ -81,7 +200,6 @@ function generateDynamicGrammarExercise(level, mode) {
         };
       }
     } else {
-      // Cazador de errores dinámico
       const wrongAux = s.isThird ? "don't" : "doesn't";
       const rightAux = s.auxNeg;
       const baseWords = a.base.split(' ');
@@ -142,23 +260,23 @@ function generateDynamicGrammarExercise(level, mode) {
 
 // --- ESTADO DEL MÓDULO DE GRAMÁTICA ---
 let currentLevel = 'basic';
-let currentMode = 'builder';
+let currentMode = 'rules';
 let selectedIndices = [];
 
 const grammarArena = document.getElementById('grammar-arena');
 
-document.querySelectorAll('.lvl-btn').forEach(btn => {
+document.querySelectorAll('#grammar .lvl-btn').forEach(btn => {
   btn.addEventListener('click', () => {
-    document.querySelectorAll('.lvl-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('#grammar .lvl-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     currentLevel = btn.dataset.level;
     renderGrammarExercise();
   });
 });
 
-document.querySelectorAll('.mode-btn').forEach(btn => {
+document.querySelectorAll('#grammar .mode-btn').forEach(btn => {
   btn.addEventListener('click', () => {
-    document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('#grammar .mode-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     currentMode = btn.dataset.mode;
     renderGrammarExercise();
@@ -166,12 +284,47 @@ document.querySelectorAll('.mode-btn').forEach(btn => {
 });
 
 function renderGrammarExercise() {
+  if (currentMode === 'rules') {
+    renderRulesGuide(currentLevel);
+    return;
+  }
   const exercise = generateDynamicGrammarExercise(currentLevel, currentMode);
   if (currentMode === 'builder') {
     renderBuilder(exercise);
   } else {
     renderHunter(exercise);
   }
+}
+
+// --- MODO 0: GUÍA DE REGLAS ESENCIALES ---
+function renderRulesGuide(level) {
+  const rules = GRAMMAR_RULES_GUIDE[level];
+  grammarArena.innerHTML = `
+    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
+      Fórmulas prácticas de uso diario. Escucha los ejemplos y luego pasa a <strong>🧱 Constructor</strong> o <strong>🕵️ Cazador de Errores</strong> para ponerlas a prueba:
+    </p>
+    <div class="rules-grid">
+      ${rules.map(r => `
+        <div class="rule-card">
+          <h3>${r.title}</h3>
+          <div class="formula-badge">${r.formula}</div>
+          ${r.examples.map(ex => {
+            const safeEn = ex.en.replace(/'/g, "\\'");
+            return `
+              <div class="rule-example-row">
+                <div>
+                  <strong>${ex.en}</strong>
+                  <div style="color: var(--text-muted); font-size: 0.85rem;">${ex.es}</div>
+                </div>
+                <button class="btn-audio" onclick="speakText('${safeEn}', 1.0)">🔊</button>
+              </div>
+            `;
+          }).join('')}
+          <p class="rule-tip">${r.tip}</p>
+        </div>
+      `).join('')}
+    </div>
+  `;
 }
 
 // --- MODO 1: CONSTRUCTOR DE BLOQUES ---
@@ -321,4 +474,5 @@ function renderHunter(ex) {
   });
 }
 
+// Inicializar vista por defecto (Guía de Reglas Esenciales)
 renderGrammarExercise();
