@@ -1,4 +1,4 @@
-// --- GUÍA DE REGLAS GRAMATICALES COTIDIANAS POR NIVEL ---
+// --- GUÍA DE 30 REGLAS GRAMATICALES COTIDIANAS POR NIVEL (10 POR NIVEL) ---
 const GRAMMAR_RULES_GUIDE = {
   basic: [
     {
@@ -6,12 +6,12 @@ const GRAMMAR_RULES_GUIDE = {
       formula: "I am | You/We/They are | He/She/It is",
       examples: [
         { en: "I'm ready to go, are you?", es: "Estoy listo para ir, ¿y tú?" },
-        { en: "She is 28 years old and she's from El Salvador.", es: "Ella tiene 28 años y es de El Salvador." }
+        { en: "She is 28 years old and she's hungry.", es: "Ella tiene 28 años y tiene hambre." }
       ],
-      tip: "⚠️ En inglés la edad y el hambre/frío usan 'to be', nunca 'have' ('I am hungry', 'I am 30')."
+      tip: "⚠️ En inglés la edad, el hambre, la sed y el frío usan 'to be', nunca 'have' ('I am 30', 'I am cold')."
     },
     {
-      title: "2. Presente Simple (Rutinas y Hábitos)",
+      title: "2. Presente Simple (Rutinas, Hábitos y Verdades)",
       formula: "Afirmativo: He/She/It + verbo(-s) | Pregunta/Negación: Do / Does + verbo base",
       examples: [
         { en: "He works from home on Fridays.", es: "Él trabaja desde casa los viernes." },
@@ -20,7 +20,25 @@ const GRAMMAR_RULES_GUIDE = {
       tip: "💡 En cuanto aparece 'does' o 'doesn't', el verbo principal pierde la '-s' ('Does she work?', no 'works')."
     },
     {
-      title: "3. Futuro Cotidiano: 'Going to' vs 'Will'",
+      title: "3. Presente Continuo (Lo que pasa ahora mismo)",
+      formula: "am / is / are + verbo(-ing)",
+      examples: [
+        { en: "I'm driving right now, can I call you back?", es: "Estoy manejando ahora mismo, ¿te puedo devolver la llamada?" },
+        { en: "They are waiting for us outside.", es: "Ellos nos están esperando afuera." }
+      ],
+      tip: "⚠️ No lo uses con verbos de estado como 'know', 'want', 'like' o 'need' ('I need help', nunca 'I'm needing')."
+    },
+    {
+      title: "4. Pasado Simple (Acciones terminadas en un momento pasado)",
+      formula: "Sujeto + verbo en pasado (-ed o irregular) | Negación/Pregunta: didn't / Did + verbo base",
+      examples: [
+        { en: "I went to the beach last weekend.", es: "Fui a la playa el fin de semana pasado." },
+        { en: "Did you see my message? — Sorry, I didn't see it.", es: "¿Viste mi mensaje? — Perdón, no lo vi." }
+      ],
+      tip: "⚠️ Igual que con 'does', después de 'didn't' o 'Did' el verbo vuelve a su forma base ('didn't go', nunca 'didn't went')."
+    },
+    {
+      title: "5. Futuro Cotidiano: 'Going to' vs 'Will'",
       formula: "Plan decidido: am/is/are + going to + verbo | Decisión espontánea: will + verbo",
       examples: [
         { en: "We're going to watch a movie tonight.", es: "Vamos a ver una película esta noche (ya planeado)." },
@@ -29,13 +47,49 @@ const GRAMMAR_RULES_GUIDE = {
       tip: "🗣️ En habla rápida, 'going to' suena casi siempre como 'gonna' ('I'm gonna call you')."
     },
     {
-      title: "4. Pasado Simple (Acciones terminadas)",
-      formula: "Sujeto + verbo en pasado (-ed o irregular) | Negación/Pregunta: didn't / Did + verbo base",
+      title: "6. 'There is' / 'There are' (Haber de existencia)",
+      formula: "Singular/Incontable: There is | Plural: There are",
       examples: [
-        { en: "I went to the beach last weekend.", es: "Fui a la playa el fin de semana pasado." },
-        { en: "Did you see my message? — Sorry, I didn't see it.", es: "¿Viste mi mensaje? — Perdón, no lo vi." }
+        { en: "There is a lot of traffic today.", es: "Hay mucho tráfico hoy." },
+        { en: "Are there any seats available?", es: "¿Hay asientos disponibles?" }
       ],
-      tip: "⚠️ Igual que con 'does', después de 'didn't' o 'Did' el verbo vuelve al presente ('didn't go', nunca 'didn't went')."
+      tip: "⚠️ Nunca uses 'Have' para decir 'hay' ('There are two options', nunca 'Have two options')."
+    },
+    {
+      title: "7. Contables vs Incontables ('Much / Many / A lot of')",
+      formula: "Plurales: How many / many | Incontables (agua, dinero, tiempo): How much / much",
+      examples: [
+        { en: "How much time do we have left?", es: "¿Cuánto tiempo nos queda?" },
+        { en: "I don't have many meetings today, just a lot of emails.", es: "No tengo muchas reuniones hoy, solo muchos correos." }
+      ],
+      tip: "💡 'A lot of' es tu comodín seguro: funciona tanto para contables como para incontables en frases afirmativas."
+    },
+    {
+      title: "8. Preposiciones de Tiempo ('In / On / At')",
+      formula: "AT + hora exacta | ON + días y fechas | IN + meses, años y partes del día",
+      examples: [
+        { en: "The meeting is on Monday at 9:30 AM.", es: "La reunión es el lunes a las 9:30 AM." },
+        { en: "I usually drink coffee in the morning.", es: "Usualmente tomo café en la mañana." }
+      ],
+      tip: "💡 Excepción clave: se dice 'in the morning/afternoon/evening', pero 'at night' y 'on the weekend'."
+    },
+    {
+      title: "9. Pronombres Objeto y Posesivos ('Me / Him / Her / Their')",
+      formula: "Después de verbo o preposición: me, you, him, her, it, us, them",
+      examples: [
+        { en: "Can you send it to me when you finish?", es: "¿Me lo puedes enviar cuando termines?" },
+        { en: "I saw them at the mall yesterday.", es: "Los vi en el centro comercial ayer." }
+      ],
+      tip: "⚠️ No confundas 'he/she' (quien hace la acción) con 'him/her' (quien la recibe: 'Call her', no 'Call she')."
+    },
+    {
+      title: "10. Comparativos y Superlativos Cotidianos",
+      formula: "Cortos: -er than / the -est | Largos: more ... than / the most ...",
+      examples: [
+        { en: "This route is faster than the highway.", es: "Esta ruta es más rápida que la autopista." },
+        { en: "That was the best meal I've had all week.", es: "Esa fue la mejor comida que he tenido en toda la semana." }
+      ],
+      tip: "⚠️ Nunca mezcles ambos ('more faster' es incorrecto). Irregulares clave: good → better → best; bad → worse → worst."
     }
   ],
   intermediate: [
@@ -49,7 +103,7 @@ const GRAMMAR_RULES_GUIDE = {
       tip: "💡 Si mencionas CUÁNDO pasó ('yesterday', 'in 2024'), usa Pasado Simple ('I saw him yesterday'), no Presente Perfecto."
     },
     {
-      title: "2. 'For' vs 'Since' (Duración vs Inicio)",
+      title: "2. 'For' vs 'Since' (Duración vs Punto de Inicio)",
       formula: "FOR + cantidad de tiempo | SINCE + momento exacto de inicio",
       examples: [
         { en: "We have lived here for five years.", es: "Hemos vivido aquí durante cinco años." },
@@ -58,7 +112,25 @@ const GRAMMAR_RULES_GUIDE = {
       tip: "⚠️ Nunca digas 'since five years' (calco del español 'desde hace 5 años'); usa siempre 'for five years'."
     },
     {
-      title: "3. Segundo Condicional (Situaciones hipotéticas o deseos)",
+      title: "3. Presente Perfecto Continuo ('Have been + -ing')",
+      formula: "have / has + been + verbo(-ing)",
+      examples: [
+        { en: "I've been working on this app all morning.", es: "He estado trabajando en esta app toda la mañana." },
+        { en: "How long have you been learning English?", es: "¿Cuánto tiempo llevas aprendiendo inglés?" }
+      ],
+      tip: "💡 En español usamos 'llevo + gerundio' ('llevo dos horas esperando'); en inglés eso es 'I've been waiting for two hours'."
+    },
+    {
+      title: "4. Primer Condicional (Consecuencias reales y probables)",
+      formula: "If + Presente Simple, ... will / can / might + verbo base",
+      examples: [
+        { en: "If we leave now, we'll beat the traffic.", es: "Si salimos ahora, le ganaremos al tráfico." },
+        { en: "Let me know if you need anything else.", es: "Avísame si necesitas algo más." }
+      ],
+      tip: "⚠️ Nunca pongas 'will' justo después de 'If' ('If it rains', nunca 'If it will rain')."
+    },
+    {
+      title: "5. Segundo Condicional (Situaciones hipotéticas o deseos)",
       formula: "If + Pasado Simple, ... would / could + verbo base",
       examples: [
         { en: "If I had more free time, I would travel more.", es: "Si tuviera más tiempo libre, viajaría más." },
@@ -67,13 +139,49 @@ const GRAMMAR_RULES_GUIDE = {
       tip: "💡 En inglés natural se prefiere 'If I were you' en lugar de 'If I was you' para dar consejos."
     },
     {
-      title: "4. Verbos seguidos de '-ing' vs 'to + verbo'",
-      formula: "enjoy / mind / avoid / suggest + -ing | want / decide / need / promise + to",
+      title: "6. Verbos seguidos de '-ing' vs 'to + verbo'",
+      formula: "enjoy / mind / avoid / finish / suggest + -ing | want / decide / need / promise + to",
       examples: [
         { en: "Would you mind opening the window?", es: "¿Te importaría abrir la ventana?" },
         { en: "I'm looking forward to meeting you.", es: "Tengo muchas ganas de conocerte ('to' aquí es preposición + -ing)." }
       ],
       tip: "⚠️ Nunca digas 'I enjoy to play'; después de 'enjoy', 'finish' y 'avoid' siempre va gerundio (-ing)."
+    },
+    {
+      title: "7. Modales de Obligación y Consejo ('Should / Must / Have to')",
+      formula: "Consejo: should | Obligación externa: have to | Prohibición: mustn't | No necesario: don't have to",
+      examples: [
+        { en: "You don't have to wear a suit, it's casual.", es: "No tienes que usar traje, es casual (no es obligatorio)." },
+        { en: "You should back up your files before updating.", es: "Deberías respaldar tus archivos antes de actualizar." }
+      ],
+      tip: "⚠️ Diferencia crítica: 'mustn't' = prohibido hacerlo; 'don't have to' = no hace falta hacerlo, pero puedes si quieres."
+    },
+    {
+      title: "8. Voz Pasiva Cotidiana (Cuando importa la acción, no quién la hizo)",
+      formula: "be (is/was/has been) + participio pasado",
+      examples: [
+        { en: "My car is being repaired right now.", es: "Mi carro está siendo reparado ahora mismo." },
+        { en: "The package was delivered this morning.", es: "El paquete fue entregado esta mañana." }
+      ],
+      tip: "💡 Úsalo mucho cuando hables de envíos, reparaciones, reglas o noticias."
+    },
+    {
+      title: "9. Cláusulas Relativas ('Who / Which / That / Where')",
+      formula: "Personas: who/that | Cosas: which/that | Lugares: where | Posesión: whose",
+      examples: [
+        { en: "The guy who fixed my laptop did a great job.", es: "El chico que arregló mi laptop hizo un gran trabajo." },
+        { en: "That's the restaurant where we had dinner last week.", es: "Ese es el restaurante donde cenamos la semana pasada." }
+      ],
+      tip: "🗣️ En conversación, cuando 'that/who/which' es el objeto, los nativos lo omiten: 'The movie [that] we watched was awesome'."
+    },
+    {
+      title: "10. Preguntas Indirectas (Para sonar educado y natural)",
+      formula: "Could you tell me / Do you know + palabra pregunta + sujeto + verbo (sin invertir)",
+      examples: [
+        { en: "Do you know what time the store closes?", es: "¿Sabes a qué hora cierra la tienda? (no 'does the store close')." },
+        { en: "Could you tell me where the restroom is?", es: "¿Me podrías decir dónde está el baño? (no 'where is the restroom')." }
+      ],
+      tip: "⚠️ En preguntas indirectas desaparece 'do/does/did' y el verbo vuelve al orden normal de afirmación."
     }
   ],
   advanced: [
@@ -87,7 +195,16 @@ const GRAMMAR_RULES_GUIDE = {
       tip: "🗣️ Al hablar rápido, 'would have' se contrae en 'would've' (suena como 'wud-of')."
     },
     {
-      title: "2. 'Used to' vs 'Be used to' vs 'Get used to'",
+      title: "2. Condicionales Mixtos (Pasado irreal con efecto en el presente)",
+      formula: "If + had + participio (pasado), ... would + verbo base (ahora)",
+      examples: [
+        { en: "If I had taken that job, I would be living in Madrid now.", es: "Si hubiera aceptado ese trabajo, estaría viviendo en Madrid ahora." },
+        { en: "We wouldn't be lost if you had checked the map.", es: "No estaríamos perdidos si hubieras revisado el mapa." }
+      ],
+      tip: "💡 Conecta causas del pasado con consecuencias que sigues sintiendo hoy."
+    },
+    {
+      title: "3. 'Used to' vs 'Be used to' vs 'Get used to'",
       formula: "used to + verbo (antes sí, ya no) | be/get used to + -ing/sustantivo (estar/acostumbrarse)",
       examples: [
         { en: "I used to drive a manual car, now I drive an automatic.", es: "Antes manejaba carro estándar, ahora manejo automático." },
@@ -96,22 +213,67 @@ const GRAMMAR_RULES_GUIDE = {
       tip: "⚠️ Cuando lleva 'be' o 'get' delante, 'used to' exige gerundio (-ing) o un sustantivo."
     },
     {
-      title: "3. Modales de Deducción en el Pasado ('Must have / Might have')",
-      formula: "must have + participio (seguro pasó) | might/could have + participio (quizás pasó)",
+      title: "4. Modales de Deducción en el Pasado ('Must have / Might have / Can't have')",
+      formula: "must have + participio (seguro pasó) | might/could have (quizás) | can't have (imposible)",
       examples: [
         { en: "The streets are wet; it must have rained last night.", es: "Las calles están mojadas; seguro llovió anoche." },
-        { en: "He didn't answer; he might have left his phone at home.", es: "No contestó; puede que haya dejado su teléfono en casa." }
+        { en: "He can't have finished already, he just started!", es: "¡No puede haber terminado ya, apenas empezó!" }
       ],
-      tip: "💡 Es la forma más natural de especular sobre algo que ya ocurrió."
+      tip: "💡 Es la forma más natural de deducir o especular sobre algo que ya ocurrió."
     },
     {
-      title: "4. Inversiones Enfáticas (Nivel C1 / Ejecutivo)",
-      formula: "Adverbio negativo/restrictivo (Rarely, Never, Not only) + auxiliar + sujeto + verbo",
+      title: "5. 'Wish' y 'If only' (Deseos y quejas)",
+      formula: "Presente: wish + Pasado Simple | Pasado: wish + had + participio | Molestia: wish + would + verbo",
+      examples: [
+        { en: "I wish I had more time to practice.", es: "Ojalá tuviera más tiempo para practicar." },
+        { en: "I wish it would stop raining!", es: "¡Ojalá dejara de llover!" }
+      ],
+      tip: "⚠️ Después de 'I wish' siempre retrocedes un tiempo verbal (nunca digas 'I wish I have')."
+    },
+    {
+      title: "6. Causativos ('Have / Get something done')",
+      formula: "have / get + objeto + participio pasado (encargar un servicio a alguien)",
+      examples: [
+        { en: "I need to get my car washed this afternoon.", es: "Necesito mandar a lavar mi carro esta tarde." },
+        { en: "She had her hair cut yesterday.", es: "Ella se cortó el cabello ayer (en la peluquería)." }
+      ],
+      tip: "💡 Diferencia clave: 'I washed my car' (lo lavé yo mismo) vs 'I got my car washed' (pagué para que lo lavaran)."
+    },
+    {
+      title: "7. Inversiones Enfáticas (Nivel C1 / Ejecutivo)",
+      formula: "Adverbio negativo/restrictivo (Rarely, Never, Not only, Hardly) + auxiliar + sujeto + verbo",
       examples: [
         { en: "Rarely do we see such an immediate improvement.", es: "Rara vez vemos una mejora tan inmediata." },
         { en: "Not only did they finish on time, but they also saved budget.", es: "No solo terminaron a tiempo, sino que también ahorraron presupuesto." }
       ],
       tip: "💡 Úsalo en presentaciones, correos formales o entrevistas para sonar altamente articulado."
+    },
+    {
+      title: "8. Subjuntivo Formal tras Verbos de Recomendación",
+      formula: "suggest / recommend / insist / demand + that + sujeto + verbo base (sin -s ni 'to')",
+      examples: [
+        { en: "The doctor recommended that he take the medicine twice a day.", es: "El doctor recomendó que él tome la medicina dos veces al día." },
+        { en: "It's essential that everyone be on time.", es: "Es esencial que todos lleguen a tiempo." }
+      ],
+      tip: "⚠️ Fíjate que en subjuntivo C1 se dice 'that he take' (sin -s) y 'that everyone be' (no 'is')."
+    },
+    {
+      title: "9. Cláusulas de Participio (Frases más ágiles y fluidas)",
+      formula: "Verbo(-ing) o Participio(-ed) al inicio para unir dos acciones del mismo sujeto",
+      examples: [
+        { en: "Having finished the project early, we took the afternoon off.", es: "Habiendo terminado el proyecto temprano, nos tomamos la tarde libre." },
+        { en: "Built in 1984, the car still runs like a charm.", es: "Construido en 1984, el auto todavía funciona de maravilla." }
+      ],
+      tip: "💡 Elimina conectores repetitivos como 'Because we had finished...' y hace tu inglés mucho más natural."
+    },
+    {
+      title: "10. 'Had better' vs 'Would rather' (Advertencias y Preferencias)",
+      formula: "had better + verbo base (más vale que...) | would rather + verbo base (preferiría...)",
+      examples: [
+        { en: "We'd better leave now or we'll miss the flight.", es: "Más vale que salgamos ahora o perderemos el vuelo." },
+        { en: "I'd rather stay home tonight than go to a crowded bar.", es: "Preferiría quedarme en casa esta noche antes que ir a un bar lleno." }
+      ],
+      tip: "⚠️ 'Had better' lleva un tono de urgencia o advertencia; para un consejo suave usa 'should'."
     }
   ]
 };
@@ -236,7 +398,6 @@ function generateDynamicGrammarExercise(level, mode) {
     }
   }
 
-  // Advanced (C1)
   if (mode === 'builder') {
     const inv = pickRandom(DYNAMIC_GRAMMAR_ENGINE.advanced.inversions);
     return {
@@ -301,7 +462,7 @@ function renderRulesGuide(level) {
   const rules = GRAMMAR_RULES_GUIDE[level];
   grammarArena.innerHTML = `
     <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
-      Fórmulas prácticas de uso diario. Escucha los ejemplos y luego pasa a <strong>🧱 Constructor</strong> o <strong>🕵️ Cazador de Errores</strong> para ponerlas a prueba:
+      Mostrando <strong>${rules.length} reglas esenciales</strong> para este nivel. Escucha los ejemplos y luego pasa a <strong>🧱 Constructor</strong> o <strong>🕵️ Cazador de Errores</strong>:
     </p>
     <div class="rules-grid">
       ${rules.map(r => `
@@ -474,5 +635,5 @@ function renderHunter(ex) {
   });
 }
 
-// Inicializar vista por defecto (Guía de Reglas Esenciales)
+// Inicializar vista por defecto
 renderGrammarExercise();
